@@ -1,0 +1,1577 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{C1\_W2\_Assignment}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{assignment-2-naive-bayes}{%
+\section{Assignment 2: Naive Bayes}\label{assignment-2-naive-bayes}}
+
+Welcome to week two of this specialization. You will learn about Naive
+Bayes. Concretely, you will be using Naive Bayes for sentiment analysis
+on tweets. Given a tweet, you will decide if it has a positive sentiment
+or a negative one. Specifically you will:
+
+\begin{itemize}
+\tightlist
+\item
+  Train a naive bayes model on a sentiment analysis task
+\item
+  Test using your model
+\item
+  Compute ratios of positive words to negative words
+\item
+  Do some error analysis
+\item
+  Predict on your own tweet
+\end{itemize}
+
+You may already be familiar with Naive Bayes and its justification in
+terms of conditional probabilities and independence. * In this week's
+lectures and assignments we used the ratio of probabilities between
+positive and negative sentiment. * This approach gives us simpler
+formulas for these 2-way classification tasks.
+
+\hypertarget{important-note-on-submission-to-the-autograder}{%
+\subsection{Important Note on Submission to the
+AutoGrader}\label{important-note-on-submission-to-the-autograder}}
+
+Before submitting your assignment to the AutoGrader, please make sure
+you are not doing the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have not added any \emph{extra} \texttt{print} statement(s) in the
+  assignment.
+\item
+  You have not added any \emph{extra} code cell(s) in the assignment.
+\item
+  You have not changed any of the function parameters.
+\item
+  You are not using any global variables inside your graded exercises.
+  Unless specifically instructed to do so, please refrain from it and
+  use the local variables instead.
+\item
+  You are not changing the assignment code where it is not required,
+  like creating \emph{extra} variables.
+\end{enumerate}
+
+If you do any of the following, you will get something like,
+\texttt{Grader\ not\ found} (or similarly unexpected) error upon
+submitting your assignment. Before asking for help/debugging the errors
+in your assignment, check for these first. If this is the case, and you
+don't remember the changes you have made, you can get a fresh copy of
+the assignment by following these
+\href{https://www.coursera.org/learn/classification-vector-spaces-in-nlp/supplement/YLuAg/h-ow-to-refresh-your-workspace}{instructions}.
+
+Lets get started!
+
+Load the cell below to import some packages. You may want to browse the
+documentation of unfamiliar libraries and functions.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{utils} \PY{k+kn}{import} \PY{n}{process\PYZus{}tweet}\PY{p}{,} \PY{n}{lookup}
+\PY{k+kn}{import} \PY{n+nn}{pdb}
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{corpus} \PY{k+kn}{import} \PY{n}{stopwords}\PY{p}{,} \PY{n}{twitter\PYZus{}samples}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{nltk}
+\PY{k+kn}{import} \PY{n+nn}{string}
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{tokenize} \PY{k+kn}{import} \PY{n}{TweetTokenizer}
+\PY{k+kn}{from} \PY{n+nn}{os} \PY{k+kn}{import} \PY{n}{getcwd}
+\PY{k+kn}{import} \PY{n+nn}{w2\PYZus{}unittest}
+
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{twitter\PYZus{}samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stopwords}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[nltk\_data] Downloading package twitter\_samples to
+[nltk\_data]     /home/jovyan/nltk\_data{\ldots}
+[nltk\_data]   Unzipping corpora/twitter\_samples.zip.
+[nltk\_data] Downloading package stopwords to /home/jovyan/nltk\_data{\ldots}
+[nltk\_data]   Unzipping corpora/stopwords.zip.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    If you are running this notebook in your local computer, don't forget to
+download the tweeter samples and stopwords from nltk.
+
+\begin{verbatim}
+nltk.download('stopwords')
+nltk.download('twitter_samples')
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{filePath} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{getcwd}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{/../tmp2/}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{filePath}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} get the sets of positive and negative tweets}
+\PY{n}{all\PYZus{}positive\PYZus{}tweets} \PY{o}{=} \PY{n}{twitter\PYZus{}samples}\PY{o}{.}\PY{n}{strings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive\PYZus{}tweets.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{all\PYZus{}negative\PYZus{}tweets} \PY{o}{=} \PY{n}{twitter\PYZus{}samples}\PY{o}{.}\PY{n}{strings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative\PYZus{}tweets.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} split the data into two pieces, one for training and one for testing (validation set)}
+\PY{n}{test\PYZus{}pos} \PY{o}{=} \PY{n}{all\PYZus{}positive\PYZus{}tweets}\PY{p}{[}\PY{l+m+mi}{4000}\PY{p}{:}\PY{p}{]}
+\PY{n}{train\PYZus{}pos} \PY{o}{=} \PY{n}{all\PYZus{}positive\PYZus{}tweets}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4000}\PY{p}{]}
+\PY{n}{test\PYZus{}neg} \PY{o}{=} \PY{n}{all\PYZus{}negative\PYZus{}tweets}\PY{p}{[}\PY{l+m+mi}{4000}\PY{p}{:}\PY{p}{]}
+\PY{n}{train\PYZus{}neg} \PY{o}{=} \PY{n}{all\PYZus{}negative\PYZus{}tweets}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4000}\PY{p}{]}
+
+\PY{n}{train\PYZus{}x} \PY{o}{=} \PY{n}{train\PYZus{}pos} \PY{o}{+} \PY{n}{train\PYZus{}neg}
+\PY{n}{test\PYZus{}x} \PY{o}{=} \PY{n}{test\PYZus{}pos} \PY{o}{+} \PY{n}{test\PYZus{}neg}
+
+\PY{c+c1}{\PYZsh{} avoid assumptions about the length of all\PYZus{}positive\PYZus{}tweets}
+\PY{n}{train\PYZus{}y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}pos}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}neg}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{test\PYZus{}y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}pos}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}neg}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{part-1-process-the-data}{%
+\section{Part 1: Process the Data}\label{part-1-process-the-data}}
+
+For any machine learning project, once you've gathered the data, the
+first step is to process it to make useful inputs to your model. -
+\textbf{Remove noise}: You will first want to remove noise from your
+data -- that is, remove words that don't tell you much about the
+content. These include all common words like `I, you, are, is,
+etc\ldots{}' that would not give us enough information on the sentiment.
+- We'll also remove stock market tickers, retweet symbols, hyperlinks,
+and hashtags because they can not tell you a lot of information on the
+sentiment. - You also want to remove all the punctuation from a tweet.
+The reason for doing this is because we want to treat words with or
+without the punctuation as the same word, instead of treating ``happy'',
+``happy?'', ``happy!'', ``happy,'' and ``happy.'' as different words. -
+Finally you want to use stemming to only keep track of one variation of
+each word. In other words, we'll treat ``motivation'', ``motivated'',
+and ``motivate'' similarly by grouping them within the same stem of
+``motiv-''.
+
+We have given you the function \texttt{process\_tweet} that does this
+for you.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{custom\PYZus{}tweet} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RT @Twitter @chapagain Hello There! Have a great day. :) \PYZsh{}good \PYZsh{}morning http://chapagain.com.np}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{c+c1}{\PYZsh{} print cleaned tweet}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{custom\PYZus{}tweet}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['hello', 'great', 'day', ':)', 'good', 'morn']
+    \end{Verbatim}
+
+    \hypertarget{part-1.1-implementing-your-helper-functions}{%
+\subsection{Part 1.1 Implementing your helper
+functions}\label{part-1.1-implementing-your-helper-functions}}
+
+To help you train your naive bayes model, you will need to compute a
+dictionary where the keys are a tuple (word, label) and the values are
+the corresponding frequency. Note that the labels we'll use here are 1
+for positive and 0 for negative.
+
+You will also implement a lookup helper function that takes in the
+\texttt{freqs} dictionary, a word, and a label (1 or 0) and returns the
+number of times that word and label tuple appears in the collection of
+tweets.
+
+For example: given a list of tweets
+\texttt{{[}"i\ am\ rather\ excited",\ "you\ are\ rather\ happy"{]}} and
+the label 1, the function will return a dictionary that contains the
+following key-value pairs:
+
+\{ (``rather'', 1): 2, (``happi'', 1) : 1, (``excit'', 1) : 1 \}
+
+\begin{itemize}
+\tightlist
+\item
+  Notice how for each word in the given string, the same label 1 is
+  assigned to each word.
+\item
+  Notice how the words ``i'' and ``am'' are not saved, since it was
+  removed by process\_tweet because it is a stopword.
+\item
+  Notice how the word ``rather'' appears twice in the list of tweets,
+  and so its count value is 2.
+\end{itemize}
+
+\hypertarget{instructions}{%
+\paragraph{Instructions}\label{instructions}}
+
+Create a function \texttt{count\_tweets} that takes a list of tweets as
+input, cleans all of them, and returns a dictionary. - The key in the
+dictionary is a tuple containing the stemmed word and its class label,
+e.g.~(``happi'',1). - The value the number of times this word appears in
+the given collection of tweets (an integer).
+
+    Hints
+
+Please use the \texttt{process\_tweet} function that was imported above,
+and then store the words in their respective dictionaries and sets.
+
+You may find it useful to use the \texttt{zip} function to match each
+element in \texttt{tweets} with each element in \texttt{ys}.
+
+Remember to check if the key in the dictionary exists before adding that
+key to the dictionary, or incrementing its value.
+
+Assume that the \texttt{result} dictionary that is input will contain
+clean key-value pairs (you can assume that the values will be integers
+that can be incremented). It is good practice to check the datatype
+before incrementing the value, but it's not required here.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C1 GRADED FUNCTION: count\PYZus{}tweets}
+
+\PY{k}{def} \PY{n+nf}{count\PYZus{}tweets}\PY{p}{(}\PY{n}{result}\PY{p}{,} \PY{n}{tweets}\PY{p}{,} \PY{n}{ys}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        result: a dictionary that will be used to map each pair to its frequency}
+\PY{l+s+sd}{        tweets: a list of tweets}
+\PY{l+s+sd}{        ys: a list corresponding to the sentiment of each tweet (either 0 or 1)}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        result: a dictionary mapping each pair to its frequency}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{tweet} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{ys}\PY{p}{,} \PY{n}{tweets}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} define the key, which is the word and label tuple}
+            \PY{n}{pair} \PY{o}{=} \PY{p}{(}\PY{n}{word}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} if the key exists in the dictionary, increment the count}
+            \PY{k}{if} \PY{n}{pair} \PY{o+ow}{in} \PY{n}{result}\PY{p}{:}
+                \PY{n}{result}\PY{p}{[}\PY{n}{pair}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+            \PY{c+c1}{\PYZsh{} else, if the key is new, add it to the dictionary and set the count to 1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{result}\PY{p}{[}\PY{n}{pair}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{result}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Testing your function}
+
+\PY{n}{result} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{tweets} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{i am happy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{i am tricked}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{i am sad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{i am tired}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{i am tired}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{ys} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{count\PYZus{}tweets}\PY{p}{(}\PY{n}{result}\PY{p}{,} \PY{n}{tweets}\PY{p}{,} \PY{n}{ys}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{('happi', 1): 1, ('trick', 0): 1, ('sad', 0): 1, ('tire', 0): 2\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output}: \{(`happi', 1): 1, (`trick', 0): 1, (`sad',
+0): 1, (`tire', 0): 2\}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}count\PYZus{}tweets}\PY{p}{(}\PY{n}{count\PYZus{}tweets}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-2-train-your-model-using-naive-bayes}{%
+\section{Part 2: Train your model using Naive
+Bayes}\label{part-2-train-your-model-using-naive-bayes}}
+
+Naive bayes is an algorithm that could be used for sentiment analysis.
+It takes a short time to train and also has a short prediction time.
+
+\hypertarget{so-how-do-you-train-a-naive-bayes-classifier}{%
+\paragraph{So how do you train a Naive Bayes
+classifier?}\label{so-how-do-you-train-a-naive-bayes-classifier}}
+
+\begin{itemize}
+\tightlist
+\item
+  The first part of training a naive bayes classifier is to identify the
+  number of classes that you have.
+\item
+  You will create a probability for each class. \(P(D_{pos})\) is the
+  probability that the document is positive. \(P(D_{neg})\) is the
+  probability that the document is negative. Use the formulas as follows
+  and store the values in a dictionary:
+\end{itemize}
+
+\[P(D_{pos}) = \frac{D_{pos}}{D}\tag{1}\]
+
+\[P(D_{neg}) = \frac{D_{neg}}{D}\tag{2}\]
+
+Where \(D\) is the total number of documents, or tweets in this case,
+\(D_{pos}\) is the total number of positive tweets and \(D_{neg}\) is
+the total number of negative tweets.
+
+    \hypertarget{prior-and-logprior}{%
+\paragraph{Prior and Logprior}\label{prior-and-logprior}}
+
+The prior probability represents the underlying probability in the
+target population that a tweet is positive versus negative. In other
+words, if we had no specific information and blindly picked a tweet out
+of the population set, what is the probability that it will be positive
+versus that it will be negative? That is the ``prior''.
+
+The prior is the ratio of the probabilities
+\(\frac{P(D_{pos})}{P(D_{neg})}\). We can take the log of the prior to
+rescale it, and we'll call this the logprior
+
+\[\text{logprior} = log \left( \frac{P(D_{pos})}{P(D_{neg})} \right) = log \left( \frac{D_{pos}}{D_{neg}} \right)\].
+
+Note that \(log(\frac{A}{B})\) is the same as \(log(A) - log(B)\). So
+the logprior can also be calculated as the difference between two logs:
+
+\[\text{logprior} = \log (P(D_{pos})) - \log (P(D_{neg})) = \log (D_{pos}) - \log (D_{neg})\tag{3}\]
+
+    \hypertarget{positive-and-negative-probability-of-a-word}{%
+\paragraph{Positive and Negative Probability of a
+Word}\label{positive-and-negative-probability-of-a-word}}
+
+To compute the positive probability and the negative probability for a
+specific word in the vocabulary, we'll use the following inputs:
+
+\begin{itemize}
+\tightlist
+\item
+  \(freq_{pos}\) and \(freq_{neg}\) are the frequencies of that specific
+  word in the positive or negative class. In other words, the positive
+  frequency of a word is the number of times the word is counted with
+  the label of 1.
+\item
+  \(N_{pos}\) and \(N_{neg}\) are the total number of positive and
+  negative words for all documents (for all tweets), respectively.
+\item
+  \(V\) is the number of unique words in the entire set of documents,
+  for all classes, whether positive or negative.
+\end{itemize}
+
+We'll use these to compute the positive and negative probability for a
+specific word using this formula:
+
+\[ P(W_{pos}) = \frac{freq_{pos} + 1}{N_{pos} + V}\tag{4} \]
+\[ P(W_{neg}) = \frac{freq_{neg} + 1}{N_{neg} + V}\tag{5} \]
+
+Notice that we add the ``+1'' in the numerator for additive smoothing.
+This \href{https://en.wikipedia.org/wiki/Additive_smoothing}{wiki
+article} explains more about additive smoothing.
+
+    \hypertarget{log-likelihood}{%
+\paragraph{Log likelihood}\label{log-likelihood}}
+
+To compute the loglikelihood of that very same word, we can implement
+the following equations:
+
+\[\text{loglikelihood} = \log \left(\frac{P(W_{pos})}{P(W_{neg})} \right)\tag{6}\]
+
+    \hypertarget{create-freqs-dictionary}{%
+\subparagraph{\texorpdfstring{Create \texttt{freqs}
+dictionary}{Create freqs dictionary}}\label{create-freqs-dictionary}}
+
+\begin{itemize}
+\tightlist
+\item
+  Given your \texttt{count\_tweets} function, you can compute a
+  dictionary called \texttt{freqs} that contains all the frequencies.
+\item
+  In this \texttt{freqs} dictionary, the key is the tuple (word, label)
+\item
+  The value is the number of times it has appeared.
+\end{itemize}
+
+We will use this dictionary in several parts of this assignment.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Build the freqs dictionary for later uses}
+\PY{n}{freqs} \PY{o}{=} \PY{n}{count\PYZus{}tweets}\PY{p}{(}\PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{instructions}{%
+\paragraph{Instructions}\label{instructions}}
+
+Given a freqs dictionary, \texttt{train\_x} (a list of tweets) and a
+\texttt{train\_y} (a list of labels for each tweet), implement a naive
+bayes classifier.
+
+\hypertarget{calculate-v}{%
+\subparagraph{\texorpdfstring{Calculate
+\(V\)}{Calculate V}}\label{calculate-v}}
+
+\begin{itemize}
+\tightlist
+\item
+  You can then compute the number of unique words that appear in the
+  \texttt{freqs} dictionary to get your \(V\) (you can use the
+  \texttt{set} function).
+\end{itemize}
+
+\hypertarget{calculate-freq_pos-and-freq_neg}{%
+\subparagraph{\texorpdfstring{Calculate \(freq_{pos}\) and
+\(freq_{neg}\)}{Calculate freq\_\{pos\} and freq\_\{neg\}}}\label{calculate-freq_pos-and-freq_neg}}
+
+\begin{itemize}
+\tightlist
+\item
+  Using your \texttt{freqs} dictionary, you can compute the positive and
+  negative frequency of each word \(freq_{pos}\) and \(freq_{neg}\).
+\end{itemize}
+
+\hypertarget{calculate-n_pos-and-n_neg}{%
+\subparagraph{\texorpdfstring{Calculate \(N_{pos}\), and
+\(N_{neg}\)}{Calculate N\_\{pos\}, and N\_\{neg\}}}\label{calculate-n_pos-and-n_neg}}
+
+\begin{itemize}
+\tightlist
+\item
+  Using \texttt{freqs} dictionary, you can also compute the total number
+  of positive words and total number of negative words \(N_{pos}\) and
+  \(N_{neg}\).
+\end{itemize}
+
+\hypertarget{calculate-d-d_pos-d_neg}{%
+\subparagraph{\texorpdfstring{Calculate \(D\), \(D_{pos}\),
+\(D_{neg}\)}{Calculate D, D\_\{pos\}, D\_\{neg\}}}\label{calculate-d-d_pos-d_neg}}
+
+\begin{itemize}
+\tightlist
+\item
+  Using the \texttt{train\_y} input list of labels, calculate the number
+  of documents (tweets) \(D\), as well as the number of positive
+  documents (tweets) \(D_{pos}\) and number of negative documents
+  (tweets) \(D_{neg}\).
+\item
+  Calculate the probability that a document (tweet) is positive
+  \(P(D_{pos})\), and the probability that a document (tweet) is
+  negative \(P(D_{neg})\)
+\end{itemize}
+
+\hypertarget{calculate-the-logprior}{%
+\subparagraph{Calculate the logprior}\label{calculate-the-logprior}}
+
+\begin{itemize}
+\tightlist
+\item
+  the logprior is \(log(D_{pos}) - log(D_{neg})\)
+\end{itemize}
+
+\hypertarget{calculate-log-likelihood}{%
+\subparagraph{Calculate log likelihood}\label{calculate-log-likelihood}}
+
+\begin{itemize}
+\tightlist
+\item
+  Finally, you can iterate over each word in the vocabulary, use your
+  \texttt{lookup} function to get the positive frequencies,
+  \(freq_{pos}\), and the negative frequencies, \(freq_{neg}\), for that
+  specific word.
+\item
+  Compute the positive probability of each word \(P(W_{pos})\), negative
+  probability of each word \(P(W_{neg})\) using equations 4 \& 5.
+\end{itemize}
+
+\[ P(W_{pos}) = \frac{freq_{pos} + 1}{N_{pos} + V}\tag{4} \]
+\[ P(W_{neg}) = \frac{freq_{neg} + 1}{N_{neg} + V}\tag{5} \]
+
+\textbf{Note:} We'll use a dictionary to store the log likelihoods for
+each word. The key is the word, the value is the log likelihood of that
+word).
+
+\begin{itemize}
+\tightlist
+\item
+  You can then compute the loglikelihood:
+  \(log \left( \frac{P(W_{pos})}{P(W_{neg})} \right)\).
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C2 GRADED FUNCTION: train\PYZus{}naive\PYZus{}bayes}
+
+\PY{k}{def} \PY{n+nf}{train\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        freqs: dictionary from (word, label) to how often the word appears}
+\PY{l+s+sd}{        train\PYZus{}x: a list of tweets}
+\PY{l+s+sd}{        train\PYZus{}y: a list of labels correponding to the tweets (0,1)}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        logprior: the log prior. (equation 3 above)}
+\PY{l+s+sd}{        loglikelihood: the log likelihood of you Naive bayes equation. (equation 6 above)}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{loglikelihood} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{n}{logprior} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{c+c1}{\PYZsh{} calculate V, the number of unique words in the vocabulary}
+    \PY{n}{vocab} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{[}\PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{pair} \PY{o+ow}{in} \PY{n}{freqs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+    \PY{n}{V} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{vocab}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} calculate N\PYZus{}pos and N\PYZus{}neg}
+    \PY{n}{N\PYZus{}pos} \PY{o}{=} \PY{n}{N\PYZus{}neg} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{pair} \PY{o+ow}{in} \PY{n}{freqs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} if the label is positive (greater than zero)}
+        \PY{k}{if} \PY{n}{pair}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} Increment the number of positive words by the count for this (word, label) pair}
+            \PY{n}{N\PYZus{}pos} \PY{o}{+}\PY{o}{=} \PY{n}{freqs}\PY{p}{[}\PY{n}{pair}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} else, the label is negative}
+        \PY{k}{else}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} increment the number of negative words by the count for this (word,label) pair}
+            \PY{n}{N\PYZus{}neg} \PY{o}{+}\PY{o}{=} \PY{n}{freqs}\PY{p}{[}\PY{n}{pair}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} Calculate D, the number of documents}
+    \PY{n}{D} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}y}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Calculate D\PYZus{}pos, the number of positive documents (*hint: use sum(\PYZlt{}np\PYZus{}array\PYZgt{}))}
+    \PY{n}{D\PYZus{}pos} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Calculate D\PYZus{}neg, the number of negative documents (*hint: compute using D and D\PYZus{}pos)}
+    \PY{n}{D\PYZus{}neg} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Calculate logprior}
+    \PY{n}{logprior} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{D\PYZus{}pos}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{D\PYZus{}neg}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} For each word in the vocabulary...}
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{vocab}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} get the positive and negative frequency of the word}
+        \PY{n}{freq\PYZus{}pos} \PY{o}{=} \PY{n}{lookup}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{freq\PYZus{}neg} \PY{o}{=} \PY{n}{lookup}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} calculate the probability that each word is positive, and negative}
+        \PY{n}{p\PYZus{}w\PYZus{}pos} \PY{o}{=} \PY{p}{(}\PY{n}{freq\PYZus{}pos} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{N\PYZus{}pos} \PY{o}{+} \PY{n}{V}\PY{p}{)}
+        \PY{n}{p\PYZus{}w\PYZus{}neg} \PY{o}{=} \PY{p}{(}\PY{n}{freq\PYZus{}neg} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{N\PYZus{}neg} \PY{o}{+} \PY{n}{V}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} calculate the log likelihood of the word}
+        \PY{n}{loglikelihood}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{p\PYZus{}w\PYZus{}pos} \PY{o}{/} \PY{n}{p\PYZus{}w\PYZus{}neg}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C3 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood} \PY{o}{=} \PY{n}{train\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{logprior}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{loglikelihood}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.0
+9165
+    \end{Verbatim}
+
+    \textbf{Expected Output}:
+
+0.0
+
+9165
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}train\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{train\PYZus{}naive\PYZus{}bayes}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-3-test-your-naive-bayes}{%
+\section{Part 3: Test your naive
+bayes}\label{part-3-test-your-naive-bayes}}
+
+Now that we have the \texttt{logprior} and \texttt{loglikelihood}, we
+can test the naive bayes function by making predicting on some tweets!
+
+\hypertarget{implement-naive_bayes_predict}{%
+\paragraph{\texorpdfstring{Implement
+\texttt{naive\_bayes\_predict}}{Implement naive\_bayes\_predict}}\label{implement-naive_bayes_predict}}
+
+\textbf{Instructions}: Implement the \texttt{naive\_bayes\_predict}
+function to make predictions on tweets. * The function takes in the
+\texttt{tweet}, \texttt{logprior}, \texttt{loglikelihood}. * It returns
+the probability that the tweet belongs to the positive or negative
+class. * For each tweet, sum up loglikelihoods of each word in the
+tweet. * Also add the logprior to this sum to get the predicted
+sentiment of that tweet.
+
+\[ p = logprior + \sum_i^N (loglikelihood_i)\]
+
+\hypertarget{note}{%
+\paragraph{Note}\label{note}}
+
+Note we calculate the prior from the training data, and that the
+training data is evenly split between positive and negative labels (4000
+positive and 4000 negative tweets). This means that the ratio of
+positive to negative 1, and the logprior is 0.
+
+The value of 0.0 means that when we add the logprior to the log
+likelihood, we're just adding zero to the log likelihood. However,
+please remember to include the logprior, because whenever the data is
+not perfectly balanced, the logprior will be a non-zero value.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C4 GRADED FUNCTION: naive\PYZus{}bayes\PYZus{}predict}
+
+\PY{k}{def} \PY{n+nf}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        tweet: a string}
+\PY{l+s+sd}{        logprior: a number}
+\PY{l+s+sd}{        loglikelihood: a dictionary of words mapping to numbers}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        p: the sum of all the logliklihoods of each word in the tweet (if found in the dictionary) + logprior (a number)}
+
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} process the tweet to get a list of words}
+    \PY{n}{word\PYZus{}l} \PY{o}{=} \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} initialize probability to zero}
+    \PY{n}{p} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{c+c1}{\PYZsh{} add the logprior}
+    \PY{n}{p} \PY{o}{+}\PY{o}{=} \PY{n}{logprior}
+
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{word\PYZus{}l}\PY{p}{:}
+
+        \PY{c+c1}{\PYZsh{} check if the word exists in the loglikelihood dictionary}
+        \PY{k}{if} \PY{n}{word} \PY{o+ow}{in} \PY{n}{loglikelihood}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} add the log likelihood of that word to the probability}
+            \PY{n}{p} \PY{o}{+}\PY{o}{=} \PY{n}{loglikelihood}\PY{p}{[}\PY{n}{word}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{p}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C5 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{c+c1}{\PYZsh{} Experiment with your own tweet.}
+\PY{n}{my\PYZus{}tweet} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{She smiled.}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{p} \PY{o}{=} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The expected output is}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The expected output is 1.5577981920239676
+    \end{Verbatim}
+
+    \textbf{Expected Output}: - The expected output is around 1.55 - The
+sentiment is positive.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{implement-test_naive_bayes}{%
+\paragraph{Implement
+test\_naive\_bayes}\label{implement-test_naive_bayes}}
+
+\textbf{Instructions}: * Implement \texttt{test\_naive\_bayes} to check
+the accuracy of your predictions. * The function takes in your
+\texttt{test\_x}, \texttt{test\_y}, log\_prior, and loglikelihood * It
+returns the accuracy of your model. * First, use
+\texttt{naive\_bayes\_predict} function to make predictions for each
+tweet in text\_x.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C6 GRADED FUNCTION: test\PYZus{}naive\PYZus{}bayes}
+
+\PY{k}{def} \PY{n+nf}{test\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{,} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{o}{=}\PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        test\PYZus{}x: A list of tweets}
+\PY{l+s+sd}{        test\PYZus{}y: the corresponding labels for the list of tweets}
+\PY{l+s+sd}{        logprior: the logprior}
+\PY{l+s+sd}{        loglikelihood: a dictionary with the loglikelihoods for each word}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        accuracy: (\PYZsh{} of tweets classified correctly)/(total \PYZsh{} of tweets)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{accuracy} \PY{o}{=} \PY{l+m+mi}{0}  \PY{c+c1}{\PYZsh{} return this properly}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{n}{y\PYZus{}hats} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{tweet} \PY{o+ow}{in} \PY{n}{test\PYZus{}x}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} if the prediction is \PYZgt{} 0}
+        \PY{k}{if} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} the predicted class is 1}
+            \PY{n}{y\PYZus{}hat\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} otherwise the predicted class is 0}
+            \PY{n}{y\PYZus{}hat\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{0}
+
+        \PY{c+c1}{\PYZsh{} append the predicted class to the list y\PYZus{}hats}
+        \PY{n}{y\PYZus{}hats}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{y\PYZus{}hat\PYZus{}i}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} error is the average of the absolute values of the differences between y\PYZus{}hats and test\PYZus{}y}
+    \PY{n}{error} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{absolute}\PY{p}{(}\PY{n}{y\PYZus{}hats} \PY{o}{\PYZhy{}} \PY{n}{test\PYZus{}y}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Accuracy is 1 minus the error}
+    \PY{n}{accuracy} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{error}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{accuracy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Naive Bayes accuracy = }\PY{l+s+si}{\PYZpc{}0.4f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}}
+      \PY{p}{(}\PY{n}{test\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Naive Bayes accuracy = 0.9955
+    \end{Verbatim}
+
+    \textbf{Expected Accuracy}:
+
+\texttt{Naive\ Bayes\ accuracy\ =\ 0.9955}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C7 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{c+c1}{\PYZsh{} Run this cell to test your function}
+\PY{k}{for} \PY{n}{tweet} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am happy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am bad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{this movie should have been great.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}    
+    \PY{n}{p} \PY{o}{=} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{tweet}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} }\PY{l+s+si}{\PYZob{}}\PY{n}{p}\PY{l+s+si}{:}\PY{l+s+s1}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I am happy -> 2.14
+I am bad -> -1.31
+this movie should have been great. -> 2.12
+great -> 2.13
+great great -> 4.26
+great great great -> 6.39
+great great great great -> 8.52
+    \end{Verbatim}
+
+    \textbf{Expected Output}: - I am happy -\textgreater{} 2.14 - I am bad
+-\textgreater{} -1.31 - this movie should have been great.
+-\textgreater{} 2.12 - great -\textgreater{} 2.13 - great great
+-\textgreater{} 4.26 - great great great -\textgreater{} 6.39 - great
+great great great -\textgreater{} 8.52
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Feel free to check the sentiment of your own tweet below}
+\PY{n}{my\PYZus{}tweet} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{you are bad :(}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+-8.837351738825648
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{unittest\PYZus{}test\PYZus{}naive\PYZus{}bayes}\PY{p}{(}\PY{n}{test\PYZus{}naive\PYZus{}bayes}\PY{p}{,} \PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-4-filter-words-by-ratio-of-positive-to-negative-counts}{%
+\section{Part 4: Filter words by Ratio of positive to negative
+counts}\label{part-4-filter-words-by-ratio-of-positive-to-negative-counts}}
+
+\begin{itemize}
+\tightlist
+\item
+  Some words have more positive counts than others, and can be
+  considered ``more positive''. Likewise, some words can be considered
+  more negative than others.
+\item
+  One way for us to define the level of positiveness or negativeness,
+  without calculating the log likelihood, is to compare the positive to
+  negative frequency of the word.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Note that we can also use the log likelihood calculations to compare
+    relative positivity or negativity of words.
+  \end{itemize}
+\item
+  We can calculate the ratio of positive to negative frequencies of a
+  word.
+\item
+  Once we're able to calculate these ratios, we can also filter a subset
+  of words that have a minimum ratio of positivity / negativity or
+  higher.
+\item
+  Similarly, we can also filter a subset of words that have a maximum
+  ratio of positivity / negativity or lower (words that are at least as
+  negative, or even more negative than a given threshold).
+\end{itemize}
+
+\hypertarget{implement-get_ratio}{%
+\paragraph{Implement get\_ratio}\label{implement-get_ratio}}
+
+\begin{itemize}
+\tightlist
+\item
+  Given the freqs dictionary of words and a particular word, use
+  \texttt{lookup(freqs,word,1)} to get the positive count of the word.
+\item
+  Similarly, use the \texttt{lookup} function to get the negative count
+  of that word.
+\item
+  Calculate the ratio of positive divided by negative counts
+\end{itemize}
+
+\[ ratio = \frac{\text{pos_words} + 1}{\text{neg_words} + 1} \]
+
+Where pos\_words and neg\_words correspond to the frequency of the words
+in their respective classes.
+
+Words
+
+Positive word count
+
+Negative Word Count
+
+glad
+
+41
+
+2
+
+arriv
+
+57
+
+4
+
+:(
+
+1
+
+3663
+
+:-(
+
+0
+
+378
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C8 GRADED FUNCTION: get\PYZus{}ratio}
+
+\PY{k}{def} \PY{n+nf}{get\PYZus{}ratio}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        freqs: dictionary containing the words}
+
+\PY{l+s+sd}{    Output: a dictionary with keys \PYZsq{}positive\PYZsq{}, \PYZsq{}negative\PYZsq{}, and \PYZsq{}ratio\PYZsq{}.}
+\PY{l+s+sd}{        Example: \PYZob{}\PYZsq{}positive\PYZsq{}: 10, \PYZsq{}negative\PYZsq{}: 20, \PYZsq{}ratio\PYZsq{}: 0.5\PYZcb{}}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{pos\PYZus{}neg\PYZus{}ratio} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mf}{0.0}\PY{p}{\PYZcb{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} use lookup() to find positive counts for the word (denoted by the integer 1)}
+    \PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{lookup}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} use lookup() to find negative counts for the word (denoted by integer 0)}
+    \PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{lookup}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} calculate the ratio of positive to negative counts for the word}
+    \PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{return} \PY{n}{pos\PYZus{}neg\PYZus{}ratio}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{get\PYZus{}ratio}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{happi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'positive': 162, 'negative': 18, 'ratio': 8.578947368421053\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}get\PYZus{}ratio}\PY{p}{(}\PY{n}{get\PYZus{}ratio}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{implement-get_words_by_thresholdfreqslabelthreshold}{%
+\paragraph{Implement
+get\_words\_by\_threshold(freqs,label,threshold)}\label{implement-get_words_by_thresholdfreqslabelthreshold}}
+
+\begin{itemize}
+\tightlist
+\item
+  If we set the label to 1, then we'll look for all words whose
+  threshold of positive/negative is at least as high as that threshold,
+  or higher.
+\item
+  If we set the label to 0, then we'll look for all words whose
+  threshold of positive/negative is at most as low as the given
+  threshold, or lower.
+\item
+  Use the \texttt{get\_ratio} function to get a dictionary containing
+  the positive count, negative count, and the ratio of positive to
+  negative counts.
+\item
+  Append the \texttt{get\_ratio} dictionary inside another dictinoary,
+  where the key is the word, and the value is the dictionary
+  \texttt{pos\_neg\_ratio} that is returned by the \texttt{get\_ratio}
+  function. An example key-value pair would have this structure:
+\end{itemize}
+
+\begin{verbatim}
+{'happi':
+    {'positive': 10, 'negative': 20, 'ratio': 0.524}
+}
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C9 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)}
+\PY{k}{def} \PY{n+nf}{get\PYZus{}words\PYZus{}by\PYZus{}threshold}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{label}\PY{p}{,} \PY{n}{threshold}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        freqs: dictionary of words}
+\PY{l+s+sd}{        label: 1 for positive, 0 for negative}
+\PY{l+s+sd}{        threshold: ratio that will be used as the cutoff for including a word in the returned dictionary}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        word\PYZus{}set: dictionary containing the word and information on its positive count, negative count, and ratio of positive to negative counts.}
+\PY{l+s+sd}{        example of a key value pair:}
+\PY{l+s+sd}{        \PYZob{}\PYZsq{}happi\PYZsq{}:}
+\PY{l+s+sd}{            \PYZob{}\PYZsq{}positive\PYZsq{}: 10, \PYZsq{}negative\PYZsq{}: 20, \PYZsq{}ratio\PYZsq{}: 0.5\PYZcb{}}
+\PY{l+s+sd}{        \PYZcb{}}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{word\PYZus{}list} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{for} \PY{n}{key} \PY{o+ow}{in} \PY{n}{freqs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{word}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{key}
+
+        \PY{c+c1}{\PYZsh{} get the positive/negative ratio for a word}
+        \PY{n}{pos\PYZus{}neg\PYZus{}ratio} \PY{o}{=} \PY{n}{get\PYZus{}ratio}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{word}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} if the label is 1 and the ratio is greater than or equal to the threshold...}
+        \PY{k}{if} \PY{n}{label} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{and} \PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{threshold}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} Add the pos\PYZus{}neg\PYZus{}ratio to the dictionary}
+            \PY{n}{word\PYZus{}list}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{o}{=} \PY{n}{pos\PYZus{}neg\PYZus{}ratio}
+
+        \PY{c+c1}{\PYZsh{} If the label is 0 and the pos\PYZus{}neg\PYZus{}ratio is less than or equal to the threshold...}
+        \PY{k}{elif} \PY{n}{label} \PY{o}{==} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{pos\PYZus{}neg\PYZus{}ratio}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{threshold}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} Add the pos\PYZus{}neg\PYZus{}ratio to the dictionary}
+            \PY{n}{word\PYZus{}list}\PY{p}{[}\PY{n}{word}\PY{p}{]} \PY{o}{=} \PY{n}{pos\PYZus{}neg\PYZus{}ratio}
+
+        \PY{c+c1}{\PYZsh{} otherwise, do not include this word in the list (do nothing)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{return} \PY{n}{word\PYZus{}list}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function: find negative words at or below a threshold}
+\PY{n}{get\PYZus{}words\PYZus{}by\PYZus{}threshold}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{threshold}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{':(': \{'positive': 1, 'negative': 3675, 'ratio': 0.000544069640914037\},
+ ':-(': \{'positive': 0, 'negative': 386, 'ratio': 0.002583979328165375\},
+ 'zayniscomingbackonjuli': \{'positive': 0, 'negative': 19, 'ratio': 0.05\},
+ '26': \{'positive': 0, 'negative': 20, 'ratio': 0.047619047619047616\},
+ '>:(': \{'positive': 0, 'negative': 43, 'ratio': 0.022727272727272728\},
+ 'lost': \{'positive': 0, 'negative': 19, 'ratio': 0.05\},
+ '♛': \{'positive': 0, 'negative': 210, 'ratio': 0.004739336492890996\},
+ '》': \{'positive': 0, 'negative': 210, 'ratio': 0.004739336492890996\},
+ 'beli̇ev': \{'positive': 0, 'negative': 35, 'ratio': 0.027777777777777776\},
+ 'wi̇ll': \{'positive': 0, 'negative': 35, 'ratio': 0.027777777777777776\},
+ 'justi̇n': \{'positive': 0, 'negative': 35, 'ratio': 0.027777777777777776\},
+ 'ｓｅｅ': \{'positive': 0, 'negative': 35, 'ratio': 0.027777777777777776\},
+ 'ｍｅ': \{'positive': 0, 'negative': 35, 'ratio': 0.027777777777777776\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function; find positive words at or above a threshold}
+\PY{n}{get\PYZus{}words\PYZus{}by\PYZus{}threshold}\PY{p}{(}\PY{n}{freqs}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{threshold}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'followfriday': \{'positive': 23, 'negative': 0, 'ratio': 24.0\},
+ 'commun': \{'positive': 27, 'negative': 1, 'ratio': 14.0\},
+ ':)': \{'positive': 2960, 'negative': 2, 'ratio': 987.0\},
+ 'flipkartfashionfriday': \{'positive': 16, 'negative': 0, 'ratio': 17.0\},
+ ':D': \{'positive': 523, 'negative': 0, 'ratio': 524.0\},
+ ':p': \{'positive': 104, 'negative': 0, 'ratio': 105.0\},
+ 'influenc': \{'positive': 16, 'negative': 0, 'ratio': 17.0\},
+ ':-)': \{'positive': 552, 'negative': 0, 'ratio': 553.0\},
+ "here'": \{'positive': 20, 'negative': 0, 'ratio': 21.0\},
+ 'youth': \{'positive': 14, 'negative': 0, 'ratio': 15.0\},
+ 'bam': \{'positive': 44, 'negative': 0, 'ratio': 45.0\},
+ 'warsaw': \{'positive': 44, 'negative': 0, 'ratio': 45.0\},
+ 'shout': \{'positive': 11, 'negative': 0, 'ratio': 12.0\},
+ ';)': \{'positive': 22, 'negative': 0, 'ratio': 23.0\},
+ 'stat': \{'positive': 51, 'negative': 0, 'ratio': 52.0\},
+ 'arriv': \{'positive': 57, 'negative': 4, 'ratio': 11.6\},
+ 'glad': \{'positive': 41, 'negative': 2, 'ratio': 14.0\},
+ 'blog': \{'positive': 27, 'negative': 0, 'ratio': 28.0\},
+ 'fav': \{'positive': 11, 'negative': 0, 'ratio': 12.0\},
+ 'fantast': \{'positive': 9, 'negative': 0, 'ratio': 10.0\},
+ 'fback': \{'positive': 26, 'negative': 0, 'ratio': 27.0\},
+ 'pleasur': \{'positive': 10, 'negative': 0, 'ratio': 11.0\},
+ '←': \{'positive': 9, 'negative': 0, 'ratio': 10.0\},
+ 'aqui': \{'positive': 9, 'negative': 0, 'ratio': 10.0\}\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Notice the difference between the positive and negative ratios. Emojis
+like :( and words like `me' tend to have a negative connotation. Other
+words like glad, community, arrives, tend to be found in the positive
+tweets.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w2\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}get\PYZus{}words\PYZus{}by\PYZus{}threshold}\PY{p}{(}\PY{n}{get\PYZus{}words\PYZus{}by\PYZus{}threshold}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-5-error-analysis}{%
+\section{Part 5: Error Analysis}\label{part-5-error-analysis}}
+
+In this part you will see some tweets that your model missclassified.
+Why do you think the missclassifications happened? Were there any
+assumptions made by your naive bayes model?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Some error analysis done for you}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Truth Predicted Tweet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{)}\PY{p}{:}
+    \PY{n}{y\PYZus{}hat} \PY{o}{=} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}
+    \PY{k}{if} \PY{n}{y} \PY{o}{!=} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sign}\PY{p}{(}\PY{n}{y\PYZus{}hat}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}d}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}0.2f}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sign}\PY{p}{(}\PY{n}{y\PYZus{}hat}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}
+            \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{encode}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ascii}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Truth Predicted Tweet
+1       0.00    b'truli later move know queen bee upward bound movingonup'
+1       0.00    b'new report talk burn calori cold work harder warm feel better
+weather :p'
+1       0.00    b'harri niall 94 harri born ik stupid wanna chang :D'
+1       0.00    b'park get sunlight'
+1       0.00    b'uff itna miss karhi thi ap :p'
+0       1.00    b'hello info possibl interest jonatha close join beti :( great'
+0       1.00    b'u prob fun david'
+0       1.00    b'pat jay'
+0       1.00    b'sr financi analyst expedia inc bellevu wa financ expediajob
+job job hire'
+    \end{Verbatim}
+
+    \hypertarget{part-6-predict-with-your-own-tweet}{%
+\section{Part 6: Predict with your own
+tweet}\label{part-6-predict-with-your-own-tweet}}
+
+In this part you can predict the sentiment of your own tweet.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test with your own tweet \PYZhy{} feel free to modify `my\PYZus{}tweet`}
+\PY{n}{my\PYZus{}tweet} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am happy because I am learning :)}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{p} \PY{o}{=} \PY{n}{naive\PYZus{}bayes\PYZus{}predict}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{,} \PY{n}{logprior}\PY{p}{,} \PY{n}{loglikelihood}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+9.571143871339594
+    \end{Verbatim}
+
+    Congratulations on completing this assignment. See you next week!
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

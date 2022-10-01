@@ -1,0 +1,1301 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{C1\_W3\_Assignment}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{assignment-3-hello-vectors}{%
+\section{Assignment 3: Hello Vectors}\label{assignment-3-hello-vectors}}
+
+Welcome to this week's programming assignment of the specialization. In
+this assignment we will explore word vectors. In natural language
+processing, we represent each word as a vector consisting of numbers.
+The vector encodes the meaning of the word. These numbers (or weights)
+for each word are learned using various machine learning models, which
+we will explore in more detail later in this specialization. Rather than
+make you code the machine learning models from scratch, we will show you
+how to use them. In the real world, you can always load the trained word
+vectors, and you will almost never have to train them from scratch. In
+this assignment you will
+
+\begin{itemize}
+\tightlist
+\item
+  Predict analogies between words.
+\item
+  Use PCA to reduce the dimensionality of the word embeddings and plot
+  them in two dimensions.
+\item
+  Compare word embeddings by using a similarity measure (the cosine
+  similarity).
+\item
+  Understand how these vector space models work.
+\end{itemize}
+
+\hypertarget{predict-the-countries-from-capitals}{%
+\subsection{1.0 Predict the Countries from
+Capitals}\label{predict-the-countries-from-capitals}}
+
+During the presentation of the module, we have illustrated the word
+analogies by finding the capital of a country from the country. In this
+part of the assignment we have changed the problem a bit. You are asked
+to predict the \textbf{countries} that corresponde to some
+\textbf{capitals}. You are playing trivia against some second grader who
+just took their geography test and knows all the capitals by heart.
+Thanks to NLP, you will be able to answer the questions properly. In
+other words, you will write a program that can give you the country by
+its capital. That way you are pretty sure you will win the trivia game.
+We will start by exploring the data set.
+
+\hypertarget{important-note-on-submission-to-the-autograder}{%
+\subsection{Important Note on Submission to the
+AutoGrader}\label{important-note-on-submission-to-the-autograder}}
+
+Before submitting your assignment to the AutoGrader, please make sure
+you are not doing the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have not added any \emph{extra} \texttt{print} statement(s) in the
+  assignment.
+\item
+  You have not added any \emph{extra} code cell(s) in the assignment.
+\item
+  You have not changed any of the function parameters.
+\item
+  You are not using any global variables inside your graded exercises.
+  Unless specifically instructed to do so, please refrain from it and
+  use the local variables instead.
+\item
+  You are not changing the assignment code where it is not required,
+  like creating \emph{extra} variables.
+\end{enumerate}
+
+If you do any of the following, you will get something like,
+\texttt{Grader\ not\ found} (or similarly unexpected) error upon
+submitting your assignment. Before asking for help/debugging the errors
+in your assignment, check for these first. If this is the case, and you
+don't remember the changes you have made, you can get a fresh copy of
+the assignment by following these
+\href{https://www.coursera.org/learn/classification-vector-spaces-in-nlp/supplement/YLuAg/h-ow-to-refresh-your-workspace}{instructions}.
+
+\hypertarget{importing-the-data}{%
+\subsubsection{1.1 Importing the data}\label{importing-the-data}}
+
+As usual, you start by importing some essential Python libraries and the
+load dataset. The dataset will be loaded as a
+\href{https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html}{Pandas
+DataFrame}, which is very a common method in data science. Because of
+the large size of the data, this may take a few minutes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Run this cell to import packages.}
+\PY{k+kn}{import} \PY{n+nn}{pickle}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{w3\PYZus{}unittest}
+
+\PY{k+kn}{from} \PY{n+nn}{utils} \PY{k+kn}{import} \PY{n}{get\PYZus{}vectors}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/capitals.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{delimiter}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{data}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{country1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{country2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} print first five elements in the DataFrame}
+\PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    city1 country1    city2     country2
+0  Athens   Greece  Bangkok     Thailand
+1  Athens   Greece  Beijing        China
+2  Athens   Greece   Berlin      Germany
+3  Athens   Greece     Bern  Switzerland
+4  Athens   Greece    Cairo        Egypt
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{to-run-this-code-on-your-own-machine}{%
+\subsubsection{To Run This Code On Your Own
+Machine:}\label{to-run-this-code-on-your-own-machine}}
+
+Note that because the original google news word embedding dataset is
+about 3.64 gigabytes, the workspace is not able to handle the full file
+set. So we've downloaded the full dataset, extracted a sample of the
+words that we're going to analyze in this assignment, and saved it in a
+pickle file called word\_embeddings\_capitals.p
+
+If you want to download the full dataset on your own and choose your own
+set of word embeddings, please see the instructions and some helper
+code.
+
+\begin{itemize}
+\tightlist
+\item
+  Download the dataset from this
+  \href{https://code.google.com/archive/p/word2vec/}{page}.
+\item
+  Search in the page for `GoogleNews-vectors-negative300.bin.gz' and
+  click the link to download.
+\item
+  You'll need to unzip the file.
+\end{itemize}
+
+    Copy-paste the code below and run it on your local machine after
+downloading the dataset to the same directory as the notebook.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ nltk}
+\ImportTok{from}\NormalTok{ gensim.models }\ImportTok{import}\NormalTok{ KeyedVectors}
+
+
+\NormalTok{embeddings }\OperatorTok{=}\NormalTok{ KeyedVectors.load\_word2vec\_format(}\StringTok{\textquotesingle{}./GoogleNews{-}vectors{-}negative300.bin\textquotesingle{}}\NormalTok{, binary }\OperatorTok{=} \VariableTok{True}\NormalTok{)}
+\NormalTok{f }\OperatorTok{=} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}capitals.txt\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{).read()}
+\NormalTok{set\_words }\OperatorTok{=} \BuiltInTok{set}\NormalTok{(nltk.word\_tokenize(f))}
+\NormalTok{select\_words }\OperatorTok{=}\NormalTok{ words }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}king\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}queen\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}oil\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}gas\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}happy\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sad\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}city\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}town\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}village\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}country\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}continent\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}petroleum\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}joyful\textquotesingle{}}\NormalTok{]}
+\ControlFlowTok{for}\NormalTok{ w }\KeywordTok{in}\NormalTok{ select\_words:}
+\NormalTok{    set\_words.add(w)}
+
+\KeywordTok{def}\NormalTok{ get\_word\_embeddings(embeddings):}
+
+\NormalTok{    word\_embeddings }\OperatorTok{=}\NormalTok{ \{\}}
+    \ControlFlowTok{for}\NormalTok{ word }\KeywordTok{in}\NormalTok{ embeddings.vocab:}
+        \ControlFlowTok{if}\NormalTok{ word }\KeywordTok{in}\NormalTok{ set\_words:}
+\NormalTok{            word\_embeddings[word] }\OperatorTok{=}\NormalTok{ embeddings[word]}
+    \ControlFlowTok{return}\NormalTok{ word\_embeddings}
+
+
+\CommentTok{\# Testing your function}
+\NormalTok{word\_embeddings }\OperatorTok{=}\NormalTok{ get\_word\_embeddings(embeddings)}
+\BuiltInTok{print}\NormalTok{(}\BuiltInTok{len}\NormalTok{(word\_embeddings))}
+\NormalTok{pickle.dump( word\_embeddings, }\BuiltInTok{open}\NormalTok{( }\StringTok{"word\_embeddings\_subset.p"}\NormalTok{, }\StringTok{"wb"}\NormalTok{ ) )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+    Now we will load the word embeddings as a
+\href{https://docs.python.org/3/tutorial/datastructures.html\#dictionaries}{Python
+dictionary}. As stated, these have already been obtained through a
+machine learning algorithm.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{word\PYZus{}embeddings} \PY{o}{=} \PY{n}{pickle}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./data/word\PYZus{}embeddings\PYZus{}subset.p}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rb}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{word\PYZus{}embeddings}\PY{p}{)}  \PY{c+c1}{\PYZsh{} there should be 243 words that will be used in this assignment}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+243
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Each of the word embedding is a 300-dimensional vector.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dimension: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{word\PYZus{}embeddings}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Spain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+dimension: 300
+    \end{Verbatim}
+
+    \hypertarget{predict-relationships-among-words}{%
+\subsubsection{Predict relationships among
+words}\label{predict-relationships-among-words}}
+
+Now you will write a function that will use the word embeddings to
+predict relationships among words. * The function will take as input
+three words. * The first two are related to each other. * It will
+predict a 4th word which is related to the third word in a similar
+manner as the two first words are related to each other. * As an
+example, ``Athens is to Greece as Bangkok is to \_\_\_\_\_\_''? * You
+will write a program that is capable of finding the fourth word. * We
+will give you a hint to show you how to compute this.
+
+A similar analogy would be the following:
+
+You will implement a function that can tell you the capital of a
+country. You should use the same methodology shown in the figure above.
+To do this, you'll first compute the cosine similarity metric or the
+Euclidean distance.
+
+    \hypertarget{cosine-similarity}{%
+\subsubsection{1.2 Cosine Similarity}\label{cosine-similarity}}
+
+The cosine similarity function is:
+
+\[\cos (\theta)=\frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\|\|\mathbf{B}\|}=\frac{\sum_{i=1}^{n} A_{i} B_{i}}{\sqrt{\sum_{i=1}^{n} A_{i}^{2}} \sqrt{\sum_{i=1}^{n} B_{i}^{2}}}\tag{1}\]
+
+\(A\) and \(B\) represent the word vectors and \(A_i\) or \(B_i\)
+represent index i of that vector. Note that if A and B are identical,
+you will get \(cos(\theta) = 1\). * Otherwise, if they are the total
+opposite, meaning, \(A= -B\), then you would get \(cos(\theta) = -1\). *
+If you get \(cos(\theta) =0\), that means that they are orthogonal (or
+perpendicular). * Numbers between 0 and 1 indicate a similarity score. *
+Numbers between -1 and 0 indicate a dissimilarity score.
+
+\textbf{Instructions}: Implement a function that takes in two word
+vectors and computes the cosine distance.
+
+    Hints
+
+Python's NumPy library adds support for linear algebra operations (e.g.,
+dot product, vector norm \ldots).
+
+Use numpy.dot .
+
+Use numpy.linalg.norm .
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C1 GRADED FUNCTION: cosine\PYZus{}similarity}
+
+\PY{k}{def} \PY{n+nf}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{B}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        A: a numpy array which corresponds to a word vector}
+\PY{l+s+sd}{        B: A numpy array which corresponds to a word vector}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        cos: numerical number representing the cosine similarity between A and B.}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{n}{dot} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{B}\PY{p}{)}  
+    \PY{n}{norma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+    \PY{n}{normb} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{B}\PY{p}{)}
+    \PY{n}{cos} \PY{o}{=} \PY{n}{dot}\PY{o}{/}\PY{p}{(}\PY{n}{norma}\PY{o}{*}\PY{n}{normb}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{return} \PY{n}{cos}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} feel free to try different words}
+\PY{n}{king} \PY{o}{=} \PY{n}{word\PYZus{}embeddings}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{king}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{queen} \PY{o}{=} \PY{n}{word\PYZus{}embeddings}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{queen}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{king}\PY{p}{,} \PY{n}{queen}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.6510956
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output}:
+
+\(\approx\) 0.651095
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w3\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{cosine\PYZus{}similarity}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{euclidean-distance}{%
+\subsubsection{1.3 Euclidean distance}\label{euclidean-distance}}
+
+You will now implement a function that computes the similarity between
+two vectors using the Euclidean distance. Euclidean distance is defined
+as:
+
+\[ \begin{aligned} d(\mathbf{A}, \mathbf{B})=d(\mathbf{B}, \mathbf{A}) &=\sqrt{\left(A_{1}-B_{1}\right)^{2}+\left(A_{2}-B_{2}\right)^{2}+\cdots+\left(A_{n}-B_{n}\right)^{2}} \\ &=\sqrt{\sum_{i=1}^{n}\left(A_{i}-B_{i}\right)^{2}} \end{aligned}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(n\) is the number of elements in the vector
+\item
+  \(A\) and \(B\) are the corresponding word vectors.
+\item
+  The more similar the words, the more likely the Euclidean distance
+  will be close to 0.
+\end{itemize}
+
+\textbf{Instructions}: Write a function that computes the Euclidean
+distance between two vectors.
+
+    Hints
+
+Use numpy.linalg.norm .
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C2 GRADED FUNCTION: euclidean}
+
+\PY{k}{def} \PY{n+nf}{euclidean}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{B}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        A: a numpy array which corresponds to a word vector}
+\PY{l+s+sd}{        B: A numpy array which corresponds to a word vector}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        d: numerical number representing the Euclidean distance between A and B.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{c+c1}{\PYZsh{} euclidean distance    }
+    \PY{n}{d} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{A}\PY{o}{\PYZhy{}}\PY{n}{B}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{d}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{euclidean}\PY{p}{(}\PY{n}{king}\PY{p}{,} \PY{n}{queen}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.4796925
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output:}
+
+2.4796925
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w3\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}euclidean}\PY{p}{(}\PY{n}{euclidean}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{finding-the-country-of-each-capital}{%
+\subsubsection{1.4 Finding the country of each
+capital}\label{finding-the-country-of-each-capital}}
+
+Now, you will use the previous functions to compute similarities between
+vectors, and use these to find the capital cities of countries. You will
+write a function that takes in three words, and the embeddings
+dictionary. Your task is to find the capital cities. For example, given
+the following words:
+
+\begin{itemize}
+\tightlist
+\item
+  1: Athens 2: Greece 3: Baghdad,
+\end{itemize}
+
+your task is to predict the country 4: Iraq.
+
+\textbf{Instructions}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  To predict the capital you might want to look at the \emph{King - Man
+  + Woman = Queen} example above, and implement that scheme into a
+  mathematical function, using the word embeddings and a similarity
+  function.
+\item
+  Iterate over the embeddings dictionary and compute the cosine
+  similarity score between your vector and the current word embedding.
+\item
+  You should add a check to make sure that the word you return is not
+  any of the words that you fed into your function. Return the one with
+  the highest score.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C3 GRADED FUNCTION: get\PYZus{}country}
+
+\PY{k}{def} \PY{n+nf}{get\PYZus{}country}\PY{p}{(}\PY{n}{city1}\PY{p}{,} \PY{n}{country1}\PY{p}{,} \PY{n}{city2}\PY{p}{,} \PY{n}{embeddings}\PY{p}{,} \PY{n}{cosine\PYZus{}similarity}\PY{o}{=}\PY{n}{cosine\PYZus{}similarity}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        city1: a string (the capital city of country1)}
+\PY{l+s+sd}{        country1: a string (the country of capital1)}
+\PY{l+s+sd}{        city2: a string (the capital city of country2)}
+\PY{l+s+sd}{        embeddings: a dictionary where the keys are words and}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        countries: a dictionary with the most likely country and its similarity score}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{c+c1}{\PYZsh{} store the city1, country 1, and city 2 in a set called group}
+    \PY{n}{group} \PY{o}{=} \PY{n+nb}{set}\PY{p}{(}\PY{p}{(}\PY{n}{city1}\PY{p}{,} \PY{n}{country1}\PY{p}{,} \PY{n}{city2}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} get embeddings of city 1}
+    \PY{n}{city1\PYZus{}emb} \PY{o}{=} \PY{n}{embeddings}\PY{p}{[}\PY{n}{city1}\PY{p}{]}
+    \PY{c+c1}{\PYZsh{} get embedding of country 1}
+    \PY{n}{country1\PYZus{}emb} \PY{o}{=} \PY{n}{embeddings}\PY{p}{[}\PY{n}{country1}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} get embedding of city 2}
+    \PY{n}{city2\PYZus{}emb} \PY{o}{=} \PY{n}{embeddings}\PY{p}{[}\PY{n}{city2}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} get embedding of country 2 (it\PYZsq{}s a combination of the embeddings of country 1, city 1 and city 2)}
+    \PY{c+c1}{\PYZsh{} Remember: King \PYZhy{} Man + Woman = None}
+    \PY{n}{vec} \PY{o}{=} \PY{n}{country1\PYZus{}emb}\PY{o}{\PYZhy{}}\PY{n}{city1\PYZus{}emb}\PY{o}{+}\PY{n}{city2\PYZus{}emb}
+
+    \PY{c+c1}{\PYZsh{} Initialize the similarity to \PYZhy{}1 (it will be replaced by a similarities that are closer to +1)}
+    \PY{n}{similarity} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+
+    \PY{c+c1}{\PYZsh{} initialize country to an empty string}
+    \PY{n}{country} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}
+
+    \PY{c+c1}{\PYZsh{} loop through all words in the embeddings dictionary}
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{embeddings}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+
+        \PY{c+c1}{\PYZsh{} first check that the word is not already in the \PYZsq{}group\PYZsq{}}
+        \PY{k}{if} \PY{n}{word} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{group}\PY{p}{:}
+
+            \PY{c+c1}{\PYZsh{} get the word embedding}
+            \PY{n}{word\PYZus{}emb} \PY{o}{=} \PY{n}{embeddings}\PY{p}{[}\PY{n}{word}\PY{p}{]}
+
+            \PY{c+c1}{\PYZsh{} calculate cosine similarity between embedding of country 2 and the word in the embeddings dictionary}
+            \PY{n}{cur\PYZus{}similarity} \PY{o}{=} \PY{n}{cosine\PYZus{}similarity}\PY{p}{(}\PY{n}{vec}\PY{p}{,}\PY{n}{word\PYZus{}emb}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} if the cosine similarity is more similar than the previously best similarity...}
+            \PY{k}{if} \PY{n}{cur\PYZus{}similarity} \PY{o}{\PYZgt{}} \PY{n}{similarity}\PY{p}{:}
+
+                \PY{c+c1}{\PYZsh{} update the similarity to the new, better similarity}
+                \PY{n}{similarity} \PY{o}{=} \PY{n}{cur\PYZus{}similarity}
+
+                \PY{c+c1}{\PYZsh{} store the country as a tuple, which contains the word and the similarity}
+                \PY{n}{country} \PY{o}{=} \PY{p}{(}\PY{n}{word}\PY{p}{,} \PY{n}{similarity}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{country}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Testing your function, note to make it more robust you can return the 5 most similar words.}
+\PY{n}{get\PYZus{}country}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Athens}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Greece}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cairo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{word\PYZus{}embeddings}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+('Egypt', 0.7626822)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \textbf{Expected Output: (Approximately)}
+
+(`Egypt', 0.7626821)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w3\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}get\PYZus{}country}\PY{p}{(}\PY{n}{get\PYZus{}country}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{model-accuracy}{%
+\subsubsection{1.5 Model Accuracy}\label{model-accuracy}}
+
+Now you will test your new function on the dataset and check the
+accuracy of the model:
+
+\[\text{Accuracy}=\frac{\text{Correct # of predictions}}{\text{Total # of predictions}}\]
+
+\textbf{Instructions}: Write a program that can compute the accuracy on
+the dataset provided for you. You have to iterate over every row to get
+the corresponding words and feed them into you \texttt{get\_country}
+function above.
+
+    Hints
+
+Use pandas.DataFrame.iterrows .
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C4 GRADED FUNCTION: get\PYZus{}accuracy}
+
+\PY{k}{def} \PY{n+nf}{get\PYZus{}accuracy}\PY{p}{(}\PY{n}{word\PYZus{}embeddings}\PY{p}{,} \PY{n}{data}\PY{p}{,} \PY{n}{get\PYZus{}country}\PY{o}{=}\PY{n}{get\PYZus{}country}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        word\PYZus{}embeddings: a dictionary where the key is a word and the value is its embedding}
+\PY{l+s+sd}{        data: a pandas data frame as}
+
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} initialize num correct to zero}
+    \PY{n}{num\PYZus{}correct} \PY{o}{=} \PY{l+m+mi}{0}
+
+    \PY{c+c1}{\PYZsh{} loop through the rows of the dataframe}
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{data}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+
+        \PY{c+c1}{\PYZsh{} get city1}
+        \PY{n}{city1} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} get country1}
+        \PY{n}{country1} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} get city2}
+        \PY{n}{city2} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} get country2}
+        \PY{n}{country2} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}
+
+        \PY{c+c1}{\PYZsh{} use get\PYZus{}country to find the predicted country2}
+        \PY{n}{predicted\PYZus{}country2}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{get\PYZus{}country}\PY{p}{(}\PY{n}{city1}\PY{p}{,}\PY{n}{country1}\PY{p}{,}\PY{n}{city2}\PY{p}{,}\PY{n}{word\PYZus{}embeddings}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} if the predicted country2 is the same as the actual country2...}
+        \PY{k}{if} \PY{n}{predicted\PYZus{}country2} \PY{o}{==} \PY{n}{country2}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} increment the number of correct by 1}
+            \PY{n}{num\PYZus{}correct} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+    \PY{c+c1}{\PYZsh{} get the number of rows in the data dataframe (length of dataframe)}
+    \PY{n}{m} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} calculate the accuracy by dividing the number correct by m}
+    \PY{n}{accuracy} \PY{o}{=} \PY{n}{num\PYZus{}correct}\PY{o}{/}\PY{n}{m}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{return} \PY{n}{accuracy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{NOTE: The cell below takes about 30 SECONDS to run.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{accuracy} \PY{o}{=} \PY{n}{get\PYZus{}accuracy}\PY{p}{(}\PY{n}{word\PYZus{}embeddings}\PY{p}{,} \PY{n}{data}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy is }\PY{l+s+si}{\PYZob{}}\PY{n}{accuracy}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Accuracy is 0.92
+    \end{Verbatim}
+
+    \textbf{Expected Output:}
+
+\(\approx\) 0.92
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w3\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}get\PYZus{}accuracy}\PY{p}{(}\PY{n}{get\PYZus{}accuracy}\PY{p}{,} \PY{n}{data}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{plotting-the-vectors-using-pca}{%
+\section{3.0 Plotting the vectors using
+PCA}\label{plotting-the-vectors-using-pca}}
+
+Now you will explore the distance between word vectors after reducing
+their dimension. The technique we will employ is known as
+\href{https://en.wikipedia.org/wiki/Principal_component_analysis}{\emph{principal
+component analysis} (PCA)}. As we saw, we are working in a
+300-dimensional space in this case. Although from a computational
+perspective we were able to perform a good job, it is impossible to
+visualize results in such high dimensional spaces.
+
+You can think of PCA as a method that projects our vectors in a space of
+reduced dimension, while keeping the maximum information about the
+original vectors in their reduced counterparts. In this case, by
+\emph{maximum infomation} we mean that the Euclidean distance between
+the original vectors and their projected siblings is minimal. Hence
+vectors that were originally close in the embeddings dictionary, will
+produce lower dimensional vectors that are still close to each other.
+
+You will see that when you map out the words, similar words will be
+clustered next to each other. For example, the words `sad', `happy',
+`joyful' all describe emotion and are supposed to be near each other
+when plotted. The words: `oil', `gas', and `petroleum' all describe
+natural resources. Words like `city', `village', `town' could be seen as
+synonyms and describe a similar thing.
+
+Before plotting the words, you need to first be able to reduce each word
+vector with PCA into 2 dimensions and then plot it. The steps to compute
+PCA are as follows:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Mean normalize the data
+\item
+  Compute the covariance matrix of your data (\(\Sigma\)).
+\item
+  Compute the eigenvectors and the eigenvalues of your covariance matrix
+\item
+  Multiply the first K eigenvectors by your normalized data. The
+  transformation should look something as follows:
+\end{enumerate}
+
+    \textbf{Instructions}:
+
+You will write a program that takes in a data set where each row
+corresponds to a word vector. * The word vectors are of dimension 300. *
+Use PCA to change the 300 dimensions to \texttt{n\_components}
+dimensions. * The new matrix should be of dimension
+\texttt{m,\ n\_componentns}.
+
+\begin{itemize}
+\tightlist
+\item
+  First de-mean the data
+\item
+  Get the eigenvalues using \texttt{linalg.eigh}. Use `eigh' rather than
+  `eig' since R is symmetric. The performance gain when using eigh
+  instead of eig is substantial.
+\item
+  Sort the eigenvectors and eigenvalues by decreasing order of the
+  eigenvalues.
+\item
+  Get a subset of the eigenvectors (choose how many principle components
+  you want to use using n\_components).
+\item
+  Return the new transformation of the data by multiplying the
+  eigenvectors with the original data.
+\end{itemize}
+
+    Hints
+
+Use numpy.mean(a,axis=None) : If you set axis = 0, you take the mean for
+each column. If you set axis = 1, you take the mean for each row.
+Remember that each row is a word vector, and the number of columns are
+the number of dimensions in a word vector.
+
+Use numpy.cov(m, rowvar=True) . This calculates the covariance matrix.
+By default rowvar is True. From the documentation: ``If rowvar is True
+(default), then each row represents a variable, with observations in the
+columns.'' In our case, each row is a word vector observation, and each
+column is a feature (variable).
+
+Use numpy.linalg.eigh(a, UPLO=`L')
+
+Use numpy.argsort sorts the values in an array from smallest to largest,
+then returns the indices from this sort.
+
+In order to reverse the order of a list, you can use: x{[}::-1{]}.
+
+To apply the sorted indices to eigenvalues, you can use this format
+x{[}indices\_sorted{]}.
+
+When applying the sorted indices to eigen vectors, note that each column
+represents an eigenvector. In order to preserve the rows but sort on the
+columns, you can use this format x{[}:,indices\_sorted{]}
+
+To transform the data using a subset of the most relevant principle
+components, take the matrix multiplication of the eigenvectors with the
+original data.
+
+The data is of shape (n\_observations, n\_features).
+
+The subset of eigenvectors are in a matrix of shape (n\_features,
+n\_components).
+
+To multiply these together, take the transposes of both the eigenvectors
+(n\_components, n\_features) and the data (n\_features,
+n\_observations).
+
+The product of these two has dimensions (n\_components,n\_observations).
+Take its transpose to get the shape (n\_observations, n\_components).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C5 GRADED FUNCTION: compute\PYZus{}pca}
+
+
+\PY{k}{def} \PY{n+nf}{compute\PYZus{}pca}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        X: of dimension (m,n) where each row corresponds to a word vector}
+\PY{l+s+sd}{        n\PYZus{}components: Number of components you want to keep.}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        X\PYZus{}reduced: data transformed in 2 dims/columns + regenerated original data}
+\PY{l+s+sd}{    pass in: data as 2D NumPy array}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} mean center the data}
+    \PY{n}{X\PYZus{}demeaned} \PY{o}{=} \PY{n}{X}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} calculate the covariance matrix}
+    \PY{n}{covariance\PYZus{}matrix} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{X\PYZus{}demeaned}\PY{p}{,}\PY{n}{rowvar}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} calculate eigenvectors \PYZam{} eigenvalues of the covariance matrix}
+    \PY{n}{eigen\PYZus{}vals}\PY{p}{,} \PY{n}{eigen\PYZus{}vecs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{eigh}\PY{p}{(}\PY{n}{covariance\PYZus{}matrix}\PY{p}{,}\PY{n}{UPLO}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{L}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} sort eigenvalue in increasing order (get the indices from the sort)}
+    \PY{n}{idx\PYZus{}sorted} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{n}{eigen\PYZus{}vals}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} reverse the order so that it\PYZsq{}s from highest to lowest.}
+    \PY{n}{idx\PYZus{}sorted\PYZus{}decreasing} \PY{o}{=} \PY{n}{idx\PYZus{}sorted}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} sort the eigen values by idx\PYZus{}sorted\PYZus{}decreasing}
+    \PY{n}{eigen\PYZus{}vals\PYZus{}sorted} \PY{o}{=} \PY{n}{eigen\PYZus{}vals}\PY{p}{[}\PY{n}{idx\PYZus{}sorted\PYZus{}decreasing}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} sort eigenvectors using the idx\PYZus{}sorted\PYZus{}decreasing indices}
+    \PY{n}{eigen\PYZus{}vecs\PYZus{}sorted} \PY{o}{=} \PY{n}{eigen\PYZus{}vecs}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{idx\PYZus{}sorted\PYZus{}decreasing}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} select the first n eigenvectors (n is desired dimension}
+    \PY{c+c1}{\PYZsh{} of rescaled data array, or dims\PYZus{}rescaled\PYZus{}data)}
+    \PY{n}{eigen\PYZus{}vecs\PYZus{}subset} \PY{o}{=} \PY{n}{eigen\PYZus{}vecs\PYZus{}sorted}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{:}\PY{n}{n\PYZus{}components}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} transform the data by multiplying the transpose of the eigenvectors with the transpose of the de\PYZhy{}meaned data}
+    \PY{c+c1}{\PYZsh{} Then take the transpose of that product.}
+    \PY{n}{X\PYZus{}reduced} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{matmul}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{eigen\PYZus{}vecs\PYZus{}subset}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{X\PYZus{}demeaned}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+
+    \PY{k}{return} \PY{n}{X\PYZus{}reduced}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Testing your function}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{X\PYZus{}reduced} \PY{o}{=} \PY{n}{compute\PYZus{}pca}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Your original matrix was }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ and it became:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}reduced}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Your original matrix was (3, 10) and it became:
+[[ 0.43437323  0.49820384]
+ [ 0.42077249 -0.50351448]
+ [-0.85514571  0.00531064]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w3\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}compute\PYZus{}pca}\PY{p}{(}\PY{n}{compute\PYZus{}pca}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \textbf{Expected Output:}
+
+Your original matrix was: (3,10) and it became:
+
+0.43437323
+
+\begin{verbatim}
+    <td>
+        0.49820384
+        </td>
+</tr>
+<tr>
+    <td>
+        0.42077249
+        </td>
+            <td>
+       -0.50351448
+        </td>
+</tr>
+<tr>
+    <td>
+        -0.85514571
+        </td>
+            <td>
+       0.00531064
+        </td>
+</tr>
+\end{verbatim}
+
+Now you will use your pca function to plot a few words we have chosen
+for you. You will see that similar words tend to be clustered near each
+other. Sometimes, even antonyms tend to be clustered near each other.
+Antonyms describe the same thing but just tend to be on the other end of
+the scale They are usually found in the same location of a sentence,
+have the same parts of speech, and thus when learning the word vectors,
+you end up getting similar weights. In the next week we will go over how
+you learn them, but for now let's just enjoy using them.
+
+\textbf{Instructions:} Run the cell below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{words} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{oil}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gas}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{happy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{town}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+         \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{village}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{country}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{continent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{petroleum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{joyful}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} given a list of words and the embeddings, it returns a matrix with all the embeddings}
+\PY{n}{X} \PY{o}{=} \PY{n}{get\PYZus{}vectors}\PY{p}{(}\PY{n}{word\PYZus{}embeddings}\PY{p}{,} \PY{n}{words}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{You have 11 words each of 300 dimensions thus X.shape is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+You have 11 words each of 300 dimensions thus X.shape is: (11, 300)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We have done the plotting for you. Just run this cell.}
+\PY{n}{result} \PY{o}{=} \PY{n}{compute\PYZus{}pca}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{result}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{word} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{words}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{n}{word}\PY{p}{,} \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{result}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{n}{result}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{l+m+mf}{0.1}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{What do you notice?}
+
+The word vectors for gas, oil and petroleum appear related to each
+other, because their vectors are close to each other. Similarly, sad,
+joyful and happy all express emotions, and are also near each other.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

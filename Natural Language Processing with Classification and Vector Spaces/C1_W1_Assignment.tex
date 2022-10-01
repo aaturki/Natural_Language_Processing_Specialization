@@ -1,0 +1,1592 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{C1\_W1\_Assignment}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{assignment-1-logistic-regression}{%
+\section{Assignment 1: Logistic
+Regression}\label{assignment-1-logistic-regression}}
+
+Welcome to week one of this specialization. You will learn about
+logistic regression. Concretely, you will be implementing logistic
+regression for sentiment analysis on tweets. Given a tweet, you will
+decide if it has a positive sentiment or a negative one. Specifically
+you will:
+
+\begin{itemize}
+\tightlist
+\item
+  Learn how to extract features for logistic regression given some text
+\item
+  Implement logistic regression from scratch
+\item
+  Apply logistic regression on a natural language processing task
+\item
+  Test using your logistic regression
+\item
+  Perform error analysis
+\end{itemize}
+
+\hypertarget{important-note-on-submission-to-the-autograder}{%
+\subsection{Important Note on Submission to the
+AutoGrader}\label{important-note-on-submission-to-the-autograder}}
+
+Before submitting your assignment to the AutoGrader, please make sure
+you are not doing the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have not added any \emph{extra} \texttt{print} statement(s) in the
+  assignment.
+\item
+  You have not added any \emph{extra} code cell(s) in the assignment.
+\item
+  You have not changed any of the function parameters.
+\item
+  You are not using any global variables inside your graded exercises.
+  Unless specifically instructed to do so, please refrain from it and
+  use the local variables instead.
+\item
+  You are not changing the assignment code where it is not required,
+  like creating \emph{extra} variables.
+\end{enumerate}
+
+If you do any of the following, you will get something like,
+\texttt{Grader\ not\ found} (or similarly unexpected) error upon
+submitting your assignment. Before asking for help/debugging the errors
+in your assignment, check for these first. If this is the case, and you
+don't remember the changes you have made, you can get a fresh copy of
+the assignment by following these
+\href{https://www.coursera.org/learn/classification-vector-spaces-in-nlp/supplement/YLuAg/h-ow-to-refresh-your-workspace}{instructions}.
+
+Lets get started!
+
+We will be using a data set of tweets. Hopefully you will get more than
+99\% accuracy.\\
+Run the cell below to load in the packages.
+
+    \hypertarget{import-functions-and-data}{%
+\subsection{Import functions and data}\label{import-functions-and-data}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} run this cell to import nltk}
+\PY{k+kn}{import} \PY{n+nn}{nltk}
+\PY{k+kn}{from} \PY{n+nn}{os} \PY{k+kn}{import} \PY{n}{getcwd}
+\PY{k+kn}{import} \PY{n+nn}{w1\PYZus{}unittest}
+
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{twitter\PYZus{}samples}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{download}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stopwords}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[nltk\_data] Downloading package twitter\_samples to
+[nltk\_data]     /home/jovyan/nltk\_data{\ldots}
+[nltk\_data]   Unzipping corpora/twitter\_samples.zip.
+[nltk\_data] Downloading package stopwords to /home/jovyan/nltk\_data{\ldots}
+[nltk\_data]   Unzipping corpora/stopwords.zip.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{imported-functions}{%
+\subsubsection{Imported functions}\label{imported-functions}}
+
+Download the data needed for this assignment. Check out the
+\href{http://www.nltk.org/howto/twitter.html}{documentation for the
+twitter\_samples dataset}.
+
+\begin{itemize}
+\tightlist
+\item
+  twitter\_samples: if you're running this notebook on your local
+  computer, you will need to download it using:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nltk.download(}\StringTok{\textquotesingle{}twitter\_samples\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  stopwords: if you're running this notebook on your local computer, you
+  will need to download it using:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nltk.download(}\StringTok{\textquotesingle{}stopwords\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{import-some-helper-functions-that-we-provided-in-the-utils.py-file}{%
+\paragraph{Import some helper functions that we provided in the utils.py
+file:}\label{import-some-helper-functions-that-we-provided-in-the-utils.py-file}}
+
+\begin{itemize}
+\tightlist
+\item
+  process\_tweet: cleans the text, tokenizes it into separate words,
+  removes stopwords, and converts words to stems.
+\item
+  build\_freqs: this counts how often a word in the `corpus' (the entire
+  set of tweets) was associated with a positive label `1' or a negative
+  label `0', then builds the `freqs' dictionary, where each key is the
+  (word,label) tuple, and the value is the count of its frequency within
+  the corpus of tweets.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{filePath} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{getcwd}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{/../tmp2/}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{nltk}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{filePath}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{from} \PY{n+nn}{nltk}\PY{n+nn}{.}\PY{n+nn}{corpus} \PY{k+kn}{import} \PY{n}{twitter\PYZus{}samples} 
+
+\PY{k+kn}{from} \PY{n+nn}{utils} \PY{k+kn}{import} \PY{n}{process\PYZus{}tweet}\PY{p}{,} \PY{n}{build\PYZus{}freqs}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{prepare-the-data}{%
+\subsubsection{Prepare the data}\label{prepare-the-data}}
+
+\begin{itemize}
+\tightlist
+\item
+  The \texttt{twitter\_samples} contains subsets of five thousand
+  positive\_tweets, five thousand negative\_tweets, and the full set of
+  10,000 tweets.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    If you used all three datasets, we would introduce duplicates of the
+    positive tweets and negative tweets.\\
+  \item
+    You will select just the five thousand positive tweets and five
+    thousand negative tweets.
+  \end{itemize}
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} select the set of positive and negative tweets}
+\PY{n}{all\PYZus{}positive\PYZus{}tweets} \PY{o}{=} \PY{n}{twitter\PYZus{}samples}\PY{o}{.}\PY{n}{strings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive\PYZus{}tweets.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{all\PYZus{}negative\PYZus{}tweets} \PY{o}{=} \PY{n}{twitter\PYZus{}samples}\PY{o}{.}\PY{n}{strings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative\PYZus{}tweets.json}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\tightlist
+\item
+  Train test split: 20\% will be in the test set, and 80\% in the
+  training set.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} split the data into two pieces, one for training and one for testing (validation set) }
+\PY{n}{test\PYZus{}pos} \PY{o}{=} \PY{n}{all\PYZus{}positive\PYZus{}tweets}\PY{p}{[}\PY{l+m+mi}{4000}\PY{p}{:}\PY{p}{]}
+\PY{n}{train\PYZus{}pos} \PY{o}{=} \PY{n}{all\PYZus{}positive\PYZus{}tweets}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4000}\PY{p}{]}
+\PY{n}{test\PYZus{}neg} \PY{o}{=} \PY{n}{all\PYZus{}negative\PYZus{}tweets}\PY{p}{[}\PY{l+m+mi}{4000}\PY{p}{:}\PY{p}{]}
+\PY{n}{train\PYZus{}neg} \PY{o}{=} \PY{n}{all\PYZus{}negative\PYZus{}tweets}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4000}\PY{p}{]}
+
+\PY{n}{train\PYZus{}x} \PY{o}{=} \PY{n}{train\PYZus{}pos} \PY{o}{+} \PY{n}{train\PYZus{}neg} 
+\PY{n}{test\PYZus{}x} \PY{o}{=} \PY{n}{test\PYZus{}pos} \PY{o}{+} \PY{n}{test\PYZus{}neg}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\tightlist
+\item
+  Create the numpy array of positive labels and negative labels.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} combine positive and negative labels}
+\PY{n}{train\PYZus{}y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}pos}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}neg}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{test\PYZus{}y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}pos}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}neg}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Print the shape train and test sets}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{train\PYZus{}y.shape = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{train\PYZus{}y}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test\PYZus{}y.shape = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{test\PYZus{}y}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+train\_y.shape = (8000, 1)
+test\_y.shape = (2000, 1)
+    \end{Verbatim}
+
+    \begin{itemize}
+\tightlist
+\item
+  Create the frequency dictionary using the imported build\_freqs
+  function.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    We highly recommend that you open utils.py and read the build\_freqs
+    function to understand what it is doing.
+  \item
+    To view the file directory, go to the menu and click
+    File-\textgreater Open.
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+    \ControlFlowTok{for}\NormalTok{ y,tweet }\KeywordTok{in} \BuiltInTok{zip}\NormalTok{(ys, tweets):}
+        \ControlFlowTok{for}\NormalTok{ word }\KeywordTok{in}\NormalTok{ process\_tweet(tweet):}
+\NormalTok{            pair }\OperatorTok{=}\NormalTok{ (word, y)}
+            \ControlFlowTok{if}\NormalTok{ pair }\KeywordTok{in}\NormalTok{ freqs:}
+\NormalTok{                freqs[pair] }\OperatorTok{+=} \DecValTok{1}
+            \ControlFlowTok{else}\NormalTok{:}
+\NormalTok{                freqs[pair] }\OperatorTok{=} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Notice how the outer for loop goes through each tweet, and the inner
+  for loop steps through each word in a tweet.
+\item
+  The `freqs' dictionary is the frequency dictionary that's being built.
+\item
+  The key is the tuple (word, label), such as (``happy'',1) or
+  (``happy'',0). The value stored for each key is the count of how many
+  times the word ``happy'' was associated with a positive label, or how
+  many times ``happy'' was associated with a negative label.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create frequency dictionary}
+\PY{n}{freqs} \PY{o}{=} \PY{n}{build\PYZus{}freqs}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{,} \PY{n}{train\PYZus{}y}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} check the output}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{type(freqs) = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{freqs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{len(freqs) = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{freqs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+type(freqs) = <class 'dict'>
+len(freqs) = 11436
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected output}\label{expected-output}}
+
+\begin{verbatim}
+type(freqs) = <class 'dict'>
+len(freqs) = 11436
+\end{verbatim}
+
+    \hypertarget{process-tweet}{%
+\subsubsection{Process tweet}\label{process-tweet}}
+
+The given function `process\_tweet' tokenizes the tweet into individual
+words, removes stop words and applies stemming.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} test the function below}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{This is an example of a positive tweet: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{train\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{This is an example of the processed version of the tweet: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+This is an example of a positive tweet:
+ \#FollowFriday @France\_Inte @PKuchly57 @Milipol\_Paris for being top engaged
+members in my community this week :)
+
+This is an example of the processed version of the tweet:
+ ['followfriday', 'top', 'engag', 'member', 'commun', 'week', ':)']
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected output}\label{expected-output}}
+
+\begin{verbatim}
+This is an example of a positive tweet: 
+ #FollowFriday @France_Inte @PKuchly57 @Milipol_Paris for being top engaged members in my community this week :)
+ 
+This is an example of the processes version: 
+ ['followfriday', 'top', 'engag', 'member', 'commun', 'week', ':)']
+\end{verbatim}
+
+    \hypertarget{part-1-logistic-regression}{%
+\section{Part 1: Logistic regression}\label{part-1-logistic-regression}}
+
+\hypertarget{part-1.1-sigmoid}{%
+\subsubsection{Part 1.1: Sigmoid}\label{part-1.1-sigmoid}}
+
+You will learn to use logistic regression for text classification. * The
+sigmoid function is defined as:
+
+\[ h(z) = \frac{1}{1+\exp^{-z}} \tag{1}\]
+
+It maps the input `z' to a value that ranges between 0 and 1, and so it
+can be treated as a probability.
+
+Figure 1
+
+    \hypertarget{instructions-implement-the-sigmoid-function}{%
+\paragraph{Instructions: Implement the sigmoid
+function}\label{instructions-implement-the-sigmoid-function}}
+
+\begin{itemize}
+\tightlist
+\item
+  You will want this function to work if z is a scalar as well as if it
+  is an array.
+\end{itemize}
+
+    Hints
+
+numpy.exp
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C1 GRADED FUNCTION: sigmoid}
+\PY{k}{def} \PY{n+nf}{sigmoid}\PY{p}{(}\PY{n}{z}\PY{p}{)}\PY{p}{:} 
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        z: is the input (can be a scalar or an array)}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        h: the sigmoid of z}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} calculate the sigmoid of z}
+    \PY{n}{h} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{z}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{k}{return} \PY{n}{h}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Testing your function }
+\PY{k}{if} \PY{p}{(}\PY{n}{sigmoid}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)} \PY{o}{==} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SUCCESS!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Oops!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{k}{if} \PY{p}{(}\PY{n}{sigmoid}\PY{p}{(}\PY{l+m+mf}{4.92}\PY{p}{)} \PY{o}{==} \PY{l+m+mf}{0.9927537604041685}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CORRECT!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Oops again!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+SUCCESS!
+CORRECT!
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w1\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}sigmoid}\PY{p}{(}\PY{n}{sigmoid}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{logistic-regression-regression-and-a-sigmoid}{%
+\subsubsection{Logistic regression: regression and a
+sigmoid}\label{logistic-regression-regression-and-a-sigmoid}}
+
+Logistic regression takes a regular linear regression, and applies a
+sigmoid to the output of the linear regression.
+
+Regression:
+\[z = \theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + ... \theta_N x_N\]
+Note that the \(\theta\) values are ``weights''. If you took the deep
+learning specialization, we referred to the weights with the `w' vector.
+In this course, we're using a different variable \(\theta\) to refer to
+the weights.
+
+Logistic regression \[ h(z) = \frac{1}{1+\exp^{-z}}\]
+\[z = \theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + ... \theta_N x_N\] We
+will refer to `z' as the `logits'.
+
+    \hypertarget{part-1.2-cost-function-and-gradient}{%
+\subsubsection{Part 1.2 Cost function and
+Gradient}\label{part-1.2-cost-function-and-gradient}}
+
+The cost function used for logistic regression is the average of the log
+loss across all training examples:
+
+\[J(\theta) = -\frac{1}{m} \sum_{i=1}^m y^{(i)}\log (h(z(\theta)^{(i)})) + (1-y^{(i)})\log (1-h(z(\theta)^{(i)}))\tag{5} \]
+* \(m\) is the number of training examples * \(y^{(i)}\) is the actual
+label of training example `i'. * \(h(z^{(i)})\) is the model's
+prediction for the training example `i'.
+
+The loss function for a single training example is
+\[ Loss = -1 \times \left( y^{(i)}\log (h(z(\theta)^{(i)})) + (1-y^{(i)})\log (1-h(z(\theta)^{(i)})) \right)\]
+
+\begin{itemize}
+\tightlist
+\item
+  All the \(h\) values are between 0 and 1, so the logs will be
+  negative. That is the reason for the factor of -1 applied to the sum
+  of the two loss terms.
+\item
+  Note that when the model predicts 1 (\(h(z(\theta)) = 1\)) and the
+  label `y' is also 1, the loss for that training example is 0.
+\item
+  Similarly, when the model predicts 0 (\(h(z(\theta)) = 0\)) and the
+  actual label is also 0, the loss for that training example is 0.
+\item
+  However, when the model prediction is close to 1
+  (\(h(z(\theta)) = 0.9999\)) and the label is 0, the second term of the
+  log loss becomes a large negative number, which is then multiplied by
+  the overall factor of -1 to convert it to a positive loss value.
+  \(-1 \times (1 - 0) \times log(1 - 0.9999) \approx 9.2\) The closer
+  the model prediction gets to 1, the larger the loss.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} verify that when the model predicts close to 1, but the actual label is 0, the loss is a large positive value}
+\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.9999}\PY{p}{)} \PY{c+c1}{\PYZsh{} loss is about 9.2}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+9.210340371976294
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{itemize}
+\tightlist
+\item
+  Likewise, if the model predicts close to 0 (\(h(z) = 0.0001\)) but the
+  actual label is 1, the first term in the loss function becomes a large
+  number: \(-1 \times log(0.0001) \approx 9.2\). The closer the
+  prediction is to zero, the larger the loss.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} verify that when the model predicts close to 0 but the actual label is 1, the loss is a large positive value}
+\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mf}{0.0001}\PY{p}{)} \PY{c+c1}{\PYZsh{} loss is about 9.2}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+9.210340371976182
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{update-the-weights}{%
+\paragraph{Update the weights}\label{update-the-weights}}
+
+To update your weight vector \(\theta\), you will apply gradient descent
+to iteratively improve your model's predictions.\\
+The gradient of the cost function \(J\) with respect to one of the
+weights \(\theta_j\) is:
+
+\[\nabla_{\theta_j}J(\theta) = \frac{1}{m} \sum_{i=1}^m(h^{(i)}-y^{(i)})x^{(i)}_j \tag{5}\]
+* `i' is the index across all `m' training examples. * `j' is the index
+of the weight \(\theta_j\), so \(x^{(i)}_j\) is the feature associated
+with weight \(\theta_j\)
+
+\begin{itemize}
+\tightlist
+\item
+  To update the weight \(\theta_j\), we adjust it by subtracting a
+  fraction of the gradient determined by \(\alpha\):
+  \[\theta_j = \theta_j - \alpha \times \nabla_{\theta_j}J(\theta) \]
+\item
+  The learning rate \(\alpha\) is a value that we choose to control how
+  big a single update will be.
+\end{itemize}
+
+    \hypertarget{instructions-implement-gradient-descent-function}{%
+\subsection{Instructions: Implement gradient descent
+function}\label{instructions-implement-gradient-descent-function}}
+
+\begin{itemize}
+\tightlist
+\item
+  The number of iterations 'num\_iters" is the number of times that
+  you'll use the entire training set.
+\item
+  For each iteration, you'll calculate the cost function using all
+  training examples (there are `m' training examples), and for all
+  features.
+\item
+  Instead of updating a single weight \(\theta_i\) at a time, we can
+  update all the weights in the column vector:\\
+  \[\mathbf{\theta} = \begin{pmatrix}
+  \theta_0
+  \\
+  \theta_1
+  \\ 
+  \theta_2 
+  \\ 
+  \vdots
+  \\ 
+  \theta_n
+  \end{pmatrix}\]
+\item
+  \(\mathbf{\theta}\) has dimensions (n+1, 1), where `n' is the number
+  of features, and there is one more element for the bias term
+  \(\theta_0\) (note that the corresponding feature value
+  \(\mathbf{x_0}\) is 1).
+\item
+  The `logits', `z', are calculated by multiplying the feature matrix
+  `x' with the weight vector `theta'. \(z = \mathbf{x}\mathbf{\theta}\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\mathbf{x}\) has dimensions (m, n+1)
+  \item
+    \(\mathbf{\theta}\): has dimensions (n+1, 1)
+  \item
+    \(\mathbf{z}\): has dimensions (m, 1)
+  \end{itemize}
+\item
+  The prediction `h', is calculated by applying the sigmoid to each
+  element in `z': \(h(z) = sigmoid(z)\), and has dimensions (m,1).
+\item
+  The cost function \(J\) is calculated by taking the dot product of the
+  vectors `y' and `log(h)'. Since both `y' and `h' are column vectors
+  (m,1), transpose the vector to the left, so that matrix multiplication
+  of a row vector with column vector performs the dot product.
+  \[J = \frac{-1}{m} \times \left(\mathbf{y}^T \cdot log(\mathbf{h}) + \mathbf{(1-y)}^T \cdot log(\mathbf{1-h}) \right)\]
+\item
+  The update of theta is also vectorized. Because the dimensions of
+  \(\mathbf{x}\) are (m, n+1), and both \(\mathbf{h}\) and
+  \(\mathbf{y}\) are (m, 1), we need to transpose the \(\mathbf{x}\) and
+  place it on the left in order to perform matrix multiplication, which
+  then yields the (n+1, 1) answer we need:
+  \[\mathbf{\theta} = \mathbf{\theta} - \frac{\alpha}{m} \times \left( \mathbf{x}^T \cdot \left( \mathbf{h-y} \right) \right)\]
+\end{itemize}
+
+    Hints
+
+use numpy.dot for matrix multiplication.
+
+To ensure that the fraction -1/m is a decimal value, cast either the
+numerator or denominator (or both), like \texttt{float(1)}, or write
+\texttt{1.} for the float version of 1.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C2 GRADED FUNCTION: gradientDescent}
+\PY{k}{def} \PY{n+nf}{gradientDescent}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{num\PYZus{}iters}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input:}
+\PY{l+s+sd}{        x: matrix of features which is (m,n+1)}
+\PY{l+s+sd}{        y: corresponding labels of the input matrix x, dimensions (m,1)}
+\PY{l+s+sd}{        theta: weight vector of dimension (n+1,1)}
+\PY{l+s+sd}{        alpha: learning rate}
+\PY{l+s+sd}{        num\PYZus{}iters: number of iterations you want to train your model for}
+\PY{l+s+sd}{    Output:}
+\PY{l+s+sd}{        J: the final cost}
+\PY{l+s+sd}{        theta: your final weight vector}
+\PY{l+s+sd}{    Hint: you might want to print the cost to make sure that it is going down.}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{c+c1}{\PYZsh{} get \PYZsq{}m\PYZsq{}, the number of rows in matrix x}
+    \PY{n}{m} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}iters}\PY{p}{)}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} get z, the dot product of x and theta}
+        \PY{n}{z} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} get the sigmoid of z}
+        \PY{n}{h} \PY{o}{=} \PY{n}{sigmoid}\PY{p}{(}\PY{n}{z}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} calculate the cost function}
+        \PY{n}{J} \PY{o}{=} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{/} \PY{n}{m}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{y}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{h}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{h}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} update the weights theta}
+        \PY{n}{theta} \PY{o}{=} \PY{n}{theta} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{alpha} \PY{o}{/} \PY{n}{m}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{p}{(}\PY{n}{h} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{n}{J} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{J}\PY{p}{)}
+    \PY{k}{return} \PY{n}{J}\PY{p}{,} \PY{n}{theta}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Check the function}
+\PY{c+c1}{\PYZsh{} Construct a synthetic test case using numpy PRNG functions}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} X input is 10 x 3 with ones for the bias terms}
+\PY{n}{tmp\PYZus{}X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{2000}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Y Labels are 10 x 1}
+\PY{n}{tmp\PYZus{}Y} \PY{o}{=} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.35}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{float}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Apply gradient descent}
+\PY{n}{tmp\PYZus{}J}\PY{p}{,} \PY{n}{tmp\PYZus{}theta} \PY{o}{=} \PY{n}{gradientDescent}\PY{p}{(}\PY{n}{tmp\PYZus{}X}\PY{p}{,} \PY{n}{tmp\PYZus{}Y}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{,} \PY{l+m+mi}{700}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The cost after training is }\PY{l+s+si}{\PYZob{}}\PY{n}{tmp\PYZus{}J}\PY{l+s+si}{:}\PY{l+s+s2}{.8f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The resulting vector of weights is }\PY{l+s+si}{\PYZob{}}\PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)} \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{tmp\PYZus{}theta}\PY{p}{)}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The cost after training is 0.67094970.
+The resulting vector of weights is [4.1e-07, 0.00035658, 7.309e-05]
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected output}\label{expected-output}}
+
+\begin{verbatim}
+The cost after training is 0.67094970.
+The resulting vector of weights is [4.1e-07, 0.00035658, 7.309e-05]
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w1\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}gradientDescent}\PY{p}{(}\PY{n}{gradientDescent}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-2-extracting-the-features}{%
+\subsection{Part 2: Extracting the
+features}\label{part-2-extracting-the-features}}
+
+\begin{itemize}
+\tightlist
+\item
+  Given a list of tweets, extract the features and store them in a
+  matrix. You will extract two features.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The first feature is the number of positive words in a tweet.
+  \item
+    The second feature is the number of negative words in a tweet.
+  \end{itemize}
+\item
+  Then train your logistic regression classifier on these features.
+\item
+  Test the classifier on a validation set.
+\end{itemize}
+
+\hypertarget{instructions-implement-the-extract_features-function.}{%
+\subsubsection{Instructions: Implement the extract\_features
+function.}\label{instructions-implement-the-extract_features-function.}}
+
+\begin{itemize}
+\tightlist
+\item
+  This function takes in a single tweet.
+\item
+  Process the tweet using the imported \texttt{process\_tweet} function
+  and save the list of tweet words.
+\item
+  Loop through each word in the list of processed words
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For each word, check the `freqs' dictionary for the count when that
+    word has a positive `1' label. (Check for the key (word, 1.0)
+  \item
+    Do the same for the count for when the word is associated with the
+    negative label `0'. (Check for the key (word, 0.0).)
+  \end{itemize}
+\end{itemize}
+
+    Hints
+
+Make sure you handle cases when the (word, label) key is not found in
+the dictionary.
+
+Search the web for hints about using the `get' function of a Python
+dictionary. Here is an example
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C3 GRADED FUNCTION: extract\PYZus{}features}
+\PY{k}{def} \PY{n+nf}{extract\PYZus{}features}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{process\PYZus{}tweet}\PY{o}{=}\PY{n}{process\PYZus{}tweet}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input: }
+\PY{l+s+sd}{        tweet: a list of words for one tweet}
+\PY{l+s+sd}{        freqs: a dictionary corresponding to the frequencies of each tuple (word, label)}
+\PY{l+s+sd}{    Output: }
+\PY{l+s+sd}{        x: a feature vector of dimension (1,3)}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} process\PYZus{}tweet tokenizes, stems, and removes stopwords}
+    \PY{n}{word\PYZus{}l} \PY{o}{=} \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} 3 elements in the form of a 1 x 3 vector}
+    \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)} 
+    
+    \PY{c+c1}{\PYZsh{}bias term is set to 1}
+    \PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1} 
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{c+c1}{\PYZsh{} loop through each word in the list of words}
+    \PY{k}{for} \PY{n}{word} \PY{o+ow}{in} \PY{n}{word\PYZus{}l}\PY{p}{:}
+        
+        \PY{c+c1}{\PYZsh{} increment the word count for the positive label 1}
+        \PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{freqs}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{p}{(}\PY{n}{word}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} increment the word count for the negative label 0}
+        \PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{freqs}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{p}{(}\PY{n}{word}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+        
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    \PY{k}{assert}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape} \PY{o}{==} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Check your function}
+\PY{c+c1}{\PYZsh{} test 1}
+\PY{c+c1}{\PYZsh{} test on training data}
+\PY{n}{tmp1} \PY{o}{=} \PY{n}{extract\PYZus{}features}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tmp1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[1.000e+00 3.133e+03 6.100e+01]]
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected output}\label{expected-output}}
+
+\begin{verbatim}
+[[1.000e+00 3.133e+03 6.100e+01]]
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} test 2:}
+\PY{c+c1}{\PYZsh{} check for when the words are not in the freqs dictionary}
+\PY{n}{tmp2} \PY{o}{=} \PY{n}{extract\PYZus{}features}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blorb bleeeeb bloooob}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tmp2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[1. 0. 0.]]
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected output}\label{expected-output}}
+
+\begin{verbatim}
+[[1. 0. 0.]]
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w1\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}extract\PYZus{}features}\PY{p}{(}\PY{n}{extract\PYZus{}features}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-3-training-your-model}{%
+\subsection{Part 3: Training Your
+Model}\label{part-3-training-your-model}}
+
+To train the model: * Stack the features for all training examples into
+a matrix X. * Call \texttt{gradientDescent}, which you've implemented
+above.
+
+This section is given to you. Please read it for understanding and run
+the cell.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} collect the features \PYZsq{}x\PYZsq{} and stack them into a matrix \PYZsq{}X\PYZsq{}}
+\PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{X}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{o}{=} \PY{n}{extract\PYZus{}features}\PY{p}{(}\PY{n}{train\PYZus{}x}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} training labels corresponding to X}
+\PY{n}{Y} \PY{o}{=} \PY{n}{train\PYZus{}y}
+
+\PY{c+c1}{\PYZsh{} Apply gradient descent}
+\PY{n}{J}\PY{p}{,} \PY{n}{theta} \PY{o}{=} \PY{n}{gradientDescent}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mf}{1e\PYZhy{}9}\PY{p}{,} \PY{l+m+mi}{1500}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The cost after training is }\PY{l+s+si}{\PYZob{}}\PY{n}{J}\PY{l+s+si}{:}\PY{l+s+s2}{.8f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The resulting vector of weights is }\PY{l+s+si}{\PYZob{}}\PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)} \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{theta}\PY{p}{)}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The cost after training is 0.22522315.
+The resulting vector of weights is [6e-08, 0.00053818, -0.0005583]
+    \end{Verbatim}
+
+    \textbf{Expected Output}:
+
+\begin{verbatim}
+The cost after training is 0.22522315.
+The resulting vector of weights is [6e-08, 0.00053818, -0.0005583]
+\end{verbatim}
+
+    \hypertarget{part-4-test-your-logistic-regression}{%
+\section{Part 4: Test your logistic
+regression}\label{part-4-test-your-logistic-regression}}
+
+It is time for you to test your logistic regression function on some new
+input that your model has not seen before.
+
+\hypertarget{instructions-write-predict_tweet}{%
+\paragraph{\texorpdfstring{Instructions: Write
+\texttt{predict\_tweet}}{Instructions: Write predict\_tweet}}\label{instructions-write-predict_tweet}}
+
+Predict whether a tweet is positive or negative.
+
+\begin{itemize}
+\tightlist
+\item
+  Given a tweet, process it, then extract the features.
+\item
+  Apply the model's learned weights on the features to get the logits.
+\item
+  Apply the sigmoid to the logits to get the prediction (a value between
+  0 and 1).
+\end{itemize}
+
+\[y_{pred} = sigmoid(\mathbf{x} \cdot \theta)\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C4 GRADED FUNCTION: predict\PYZus{}tweet}
+\PY{k}{def} \PY{n+nf}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    Input: }
+\PY{l+s+sd}{        tweet: a string}
+\PY{l+s+sd}{        freqs: a dictionary corresponding to the frequencies of each tuple (word, label)}
+\PY{l+s+sd}{        theta: (3,1) vector of weights}
+\PY{l+s+sd}{    Output: }
+\PY{l+s+sd}{        y\PYZus{}pred: the probability of a tweet being positive or negative}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{c+c1}{\PYZsh{} extract the features of the tweet and store it into x}
+    \PY{n}{x} \PY{o}{=} \PY{n}{extract\PYZus{}features}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} make the prediction using x and theta}
+    \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{sigmoid}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{theta}\PY{p}{)}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{k}{return} \PY{n}{y\PYZus{}pred}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Run this cell to test your function}
+\PY{k}{for} \PY{n}{tweet} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am happy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am bad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{this movie should have been great.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{great great great great}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{ \PYZhy{}\PYZgt{} }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}\PY{p}{)}\PY{p}{)}    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+I am happy -> 0.519275
+I am bad -> 0.494347
+this movie should have been great. -> 0.515979
+great -> 0.516065
+great great -> 0.532096
+great great great -> 0.548062
+great great great great -> 0.563929
+    \end{Verbatim}
+
+    \textbf{Expected Output}:
+
+\begin{verbatim}
+I am happy -> 0.519275
+I am bad -> 0.494347
+this movie should have been great. -> 0.515979
+great -> 0.516065
+great great -> 0.532096
+great great great -> 0.548062
+great great great great -> 0.563929
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Feel free to check the sentiment of your own tweet below}
+\PY{n}{my\PYZus{}tweet} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{I am learning :)}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([[0.83110307]])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w1\PYZus{}unittest}\PY{o}{.}\PY{n}{test\PYZus{}predict\PYZus{}tweet}\PY{p}{(}\PY{n}{predict\PYZus{}tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{check-performance-using-the-test-set}{%
+\subsection{Check performance using the test
+set}\label{check-performance-using-the-test-set}}
+
+After training your model using the training set above, check how your
+model might perform on real, unseen data, by testing it against the test
+set.
+
+\hypertarget{instructions-implement-test_logistic_regression}{%
+\paragraph{\texorpdfstring{Instructions: Implement
+\texttt{test\_logistic\_regression}}{Instructions: Implement test\_logistic\_regression}}\label{instructions-implement-test_logistic_regression}}
+
+\begin{itemize}
+\tightlist
+\item
+  Given the test data and the weights of your trained model, calculate
+  the accuracy of your logistic regression model.
+\item
+  Use your `predict\_tweet' function to make predictions on each tweet
+  in the test set.
+\item
+  If the prediction is \textgreater{} 0.5, set the model's
+  classification `y\_hat' to 1, otherwise set the model's classification
+  `y\_hat' to 0.
+\item
+  A prediction is accurate when the y\_hat equals the test\_y. Sum up
+  all the instances when they are equal and divide by m.
+\end{itemize}
+
+    Hints
+
+Use np.asarray() to convert a list to a numpy array
+
+Use numpy.squeeze() to make an (m,1) dimensional array into an (m,)
+array
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} UNQ\PYZus{}C5 GRADED FUNCTION: test\PYZus{}logistic\PYZus{}regression}
+\PY{k}{def} \PY{n+nf}{test\PYZus{}logistic\PYZus{}regression}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{predict\PYZus{}tweet}\PY{o}{=}\PY{n}{predict\PYZus{}tweet}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Input: }
+\PY{l+s+sd}{        test\PYZus{}x: a list of tweets}
+\PY{l+s+sd}{        test\PYZus{}y: (m, 1) vector with the corresponding labels for the list of tweets}
+\PY{l+s+sd}{        freqs: a dictionary with the frequency of each pair (or tuple)}
+\PY{l+s+sd}{        theta: weight vector of dimension (3, 1)}
+\PY{l+s+sd}{    Output: }
+\PY{l+s+sd}{        accuracy: (\PYZsh{} of tweets classified correctly) / (total \PYZsh{} of tweets)}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} START CODE HERE (REPLACE INSTANCES OF \PYZsq{}None\PYZsq{} with your code) \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{c+c1}{\PYZsh{} the list for storing predictions}
+    \PY{n}{y\PYZus{}hat} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    
+    \PY{k}{for} \PY{n}{tweet} \PY{o+ow}{in} \PY{n}{test\PYZus{}x}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} get the label prediction for the tweet}
+        \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+        
+        \PY{k}{if} \PY{n}{y\PYZus{}pred} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.5}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} append 1.0 to the list}
+            \PY{n}{y\PYZus{}hat}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mf}{1.0}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} append 0 to the list}
+            \PY{n}{y\PYZus{}hat}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} With the above implementation, y\PYZus{}hat is a list, but test\PYZus{}y is (m,1) array}
+    \PY{c+c1}{\PYZsh{} convert both to one\PYZhy{}dimensional arrays in order to compare them using the \PYZsq{}==\PYZsq{} operator}
+    \PY{n}{accuracy} \PY{o}{=} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{y\PYZus{}hat}\PY{p}{)} \PY{o}{==} \PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{test\PYZus{}y}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} END CODE HERE \PYZsh{}\PYZsh{}\PYZsh{}}
+    
+    \PY{k}{return} \PY{n}{accuracy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tmp\PYZus{}accuracy} \PY{o}{=} \PY{n}{test\PYZus{}logistic\PYZus{}regression}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,} \PY{n}{test\PYZus{}y}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Logistic regression model}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s accuracy = }\PY{l+s+si}{\PYZob{}}\PY{n}{tmp\PYZus{}accuracy}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Logistic regression model's accuracy = 0.9950
+    \end{Verbatim}
+
+    \hypertarget{expected-output}{%
+\paragraph{Expected Output:}\label{expected-output}}
+
+\texttt{0.9950}~\\
+Pretty good!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Test your function}
+\PY{n}{w1\PYZus{}unittest}\PY{o}{.}\PY{n}{unittest\PYZus{}test\PYZus{}logistic\PYZus{}regression}\PY{p}{(}\PY{n}{test\PYZus{}logistic\PYZus{}regression}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{ansi-green-intense}{ All tests passed}
+    \end{Verbatim}
+
+    \hypertarget{part-5-error-analysis}{%
+\section{Part 5: Error Analysis}\label{part-5-error-analysis}}
+
+In this part you will see some tweets that your model misclassified. Why
+do you think the misclassifications happened? Specifically what kind of
+tweets does your model misclassify?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Some error analysis done for you}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Label Predicted Tweet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{x}\PY{p}{,}\PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{test\PYZus{}x}\PY{p}{,}\PY{n}{test\PYZus{}y}\PY{p}{)}\PY{p}{:}
+    \PY{n}{y\PYZus{}hat} \PY{o}{=} \PY{n}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{y} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n}{y\PYZus{}hat} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{THE TWEET IS:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{x}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{THE PROCESSED TWEET IS:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}d}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}0.8f}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{y\PYZus{}hat}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{encode}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ascii}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Label Predicted Tweet
+THE TWEET IS: @MarkBreech Not sure it would be good thing 4 my bottom daring 2
+say 2 Miss B but Im gonna be so stubborn on mouth soaping ! \#NotHavingit :p
+THE PROCESSED TWEET IS: ['sure', 'would', 'good', 'thing', '4', 'bottom',
+'dare', '2', 'say', '2', 'miss', 'b', 'im', 'gonna', 'stubborn', 'mouth',
+'soap', 'nothavingit', ':p']
+1       0.48901497      b'sure would good thing 4 bottom dare 2 say 2 miss b im
+gonna stubborn mouth soap nothavingit :p'
+THE TWEET IS: I'm playing Brain Dots : ) \#BrainDots
+http://t.co/UGQzOx0huu
+THE PROCESSED TWEET IS: ["i'm", 'play', 'brain', 'dot', 'braindot']
+1       0.48418949      b"i'm play brain dot braindot"
+THE TWEET IS: I'm playing Brain Dots : ) \#BrainDots http://t.co/aOKldo3GMj
+http://t.co/xWCM9qyRG5
+THE PROCESSED TWEET IS: ["i'm", 'play', 'brain', 'dot', 'braindot']
+1       0.48418949      b"i'm play brain dot braindot"
+THE TWEET IS: I'm playing Brain Dots : ) \#BrainDots http://t.co/R2JBO8iNww
+http://t.co/ow5BBwdEMY
+THE PROCESSED TWEET IS: ["i'm", 'play', 'brain', 'dot', 'braindot']
+1       0.48418949      b"i'm play brain dot braindot"
+THE TWEET IS: off to the park to get some sunlight : )
+THE PROCESSED TWEET IS: ['park', 'get', 'sunlight']
+1       0.49636374      b'park get sunlight'
+THE TWEET IS: @msarosh Uff Itna Miss karhy thy ap :p
+THE PROCESSED TWEET IS: ['uff', 'itna', 'miss', 'karhi', 'thi', 'ap', ':p']
+1       0.48237069      b'uff itna miss karhi thi ap :p'
+THE TWEET IS: @phenomyoutube u probs had more fun with david than me : (
+THE PROCESSED TWEET IS: ['u', 'prob', 'fun', 'david']
+0       0.50988239      b'u prob fun david'
+THE TWEET IS: pats jay : (
+THE PROCESSED TWEET IS: ['pat', 'jay']
+0       0.50040365      b'pat jay'
+THE TWEET IS: my beloved grandmother : ( https://t.co/wt4oXq5xCf
+THE PROCESSED TWEET IS: ['belov', 'grandmoth']
+0       0.50000002      b'belov grandmoth'
+THE TWEET IS: Sr. Financial Analyst - Expedia, Inc.: (\#Bellevue, WA)
+http://t.co/ktknMhvwCI \#Finance \#ExpediaJobs \#Job \#Jobs \#Hiring
+THE PROCESSED TWEET IS: ['sr', 'financi', 'analyst', 'expedia', 'inc',
+'bellevu', 'wa', 'financ', 'expediajob', 'job', 'job', 'hire']
+0       0.50648681      b'sr financi analyst expedia inc bellevu wa financ
+expediajob job job hire'
+    \end{Verbatim}
+
+    Later in this specialization, we will see how we can use deeplearning to
+improve the prediction performance.
+
+    \hypertarget{part-6-predict-with-your-own-tweet}{%
+\section{Part 6: Predict with your own
+tweet}\label{part-6-predict-with-your-own-tweet}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Feel free to change the tweet below}
+\PY{n}{my\PYZus{}tweet} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{This is a ridiculously bright movie. The plot was terrible and I was sad until the ending!}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{process\PYZus{}tweet}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{)}\PY{p}{)}
+\PY{n}{y\PYZus{}hat} \PY{o}{=} \PY{n}{predict\PYZus{}tweet}\PY{p}{(}\PY{n}{my\PYZus{}tweet}\PY{p}{,} \PY{n}{freqs}\PY{p}{,} \PY{n}{theta}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y\PYZus{}hat}\PY{p}{)}
+\PY{k}{if} \PY{n}{y\PYZus{}hat} \PY{o}{\PYZgt{}} \PY{l+m+mf}{0.5}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Positive sentiment}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Negative sentiment}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['ridicul', 'bright', 'movi', 'plot', 'terribl', 'sad', 'end']
+[[0.48125423]]
+Negative sentiment
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
